@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Application AlfaMap</Name>
+    <Assembly>AlfaMap.dll</Assembly>
+    <FullClassName>AlfaMap.App</FullClassName>
+    <ClientId>749B4636-2023-4ED5-8700-1441ED921F85</ClientId>
+    <VendorId>ru.alfabank</VendorId>
+    <VendorDescription>Alfabank, https://www.alfabank.ru/ </VendorDescription>
+  </AddIn>
+</RevitAddIns>
