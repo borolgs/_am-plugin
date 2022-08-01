@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Application">
+    <Name>Application Workplace</Name>
+    <Assembly>Workplace/Workplace.dll</Assembly>
+    <FullClassName>Workplace.App</FullClassName>
+    <ClientId>8A5DB979-A622-45CA-838F-4299BA33205D</ClientId>
+    <VendorId>info.olbo</VendorId>
+    <VendorDescription>Oleg Borodatov, https://www.olbo.info/ </VendorDescription>
+  </AddIn>
+</RevitAddIns>

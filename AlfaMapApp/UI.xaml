@@ -1,0 +1,271 @@
+﻿<UserControl x:Class="AlfaMap.UI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AlfaMap"
+             xmlns:localDataSync="clr-namespace:AlfaMap.DataSync"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             MinHeight="400">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style.xaml"/>
+                <!--<ResourceDictionary>
+                    <x:Array x:Key="MockSyncNodeInfoArray" Type="{x:Type localDataSync:SyncNodeInfo}">
+                        <localDataSync:SyncNodeInfo />
+                    </x:Array>
+                </ResourceDictionary>-->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--HEADER-->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,2,2,0">
+            <!--<ToggleButton IsChecked="False" Content="Sync" ToolTip="Включить автоматическую синхронихацию" />-->
+            <Button Command="{Binding RunWorkplaceCommand}"
+                    CommandParameter="{x:Static local:WorkplaceCommand.PrepareModel}"
+                    Style="{StaticResource IconButtonStyle}" ToolTip="Настроить модель">
+                <Image x:Name="CheckImage" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
+            </Button>
+            <Button Command="{Binding RunWorkplaceCommand}"
+                    CommandParameter="{x:Static local:WorkplaceCommand.LoadOfficeData}"
+                    Style="{StaticResource IconButtonStyle}" ToolTip="Загрузить данные из BW">
+                <Image x:Name="LoadImage" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
+            </Button>
+            <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">-->
+            <Button x:Name="ConnectButton"
+                    Click="ConnectButton_Click"
+                    IsEnabled="False"
+                    Style="{StaticResource IconButtonStyle}" ToolTip="Связать с БД. Пока нужно вручную вписать Id пощадки в параметр 'AB_PlaceId' информации о проекте">
+                <Image x:Name="ConnectImage" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
+            </Button>
+            <Button Click="CreateVersionButton_Click"
+                    Command="{Binding RunWorkplaceCommand}"
+                    CommandParameter="{x:Static local:WorkplaceCommand.CreateOrOverrideActiveVersion}"
+                    Style="{StaticResource IconButtonStyle}"
+                    ToolTip="Отправить">
+                <Image x:Name="UploadNewVersion2" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
+            </Button>
+            <!--CURRENT DOCUMENT-->
+            <Grid>
+                <TextBlock Text="{Binding DocName}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            </Grid>
+            <Grid>
+                <TextBlock Text="{Binding StatusMessage}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            </Grid>
+            <!--</StackPanel>-->
+            
+        </StackPanel>
+        <TabControl Grid.Row="1">
+            <!--WORKPALCE TREE TAB-->
+            <TabItem Header="SyncResult">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" MaxHeight="200px"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- ItemsSource="{Binding SyncResults}" -->
+                    <ListBox Grid.Row="0"
+                             ItemsSource="{Binding SyncResults}"
+                             x:Name="SyncResultsListBox"
+                             SelectionChanged="SyncResultsListBox_SelectionChanged"
+                             BorderBrush="{x:Null}"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             HorizontalContentAlignment="Stretch">
+                        
+                        <!--<ListBoxItem>
+                            <DockPanel LastChildFill="False" Background="#FFF5B18B" Width="200">
+                                <TextBlock DockPanel.Dock="Left" Text="НГ-200-1" FontWeight="Bold"/>
+                                <TextBlock Margin="15,0,0,0" DockPanel.Dock="Left" TextWrapping="WrapWithOverflow" TextTrimming="CharacterEllipsis" Text="qweqwe asdasdasdsad\r\nqweqwe qweqweqweqweqweqweqweqweqweqweqweqweqweqweqweqwe"/>
+                            </DockPanel>
+                        </ListBoxItem>-->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel LastChildFill="False" ClipToBounds="True" Height="20px" ToolTip="{Binding Message}">
+                                    <DockPanel.Style>
+                                        <Style TargetType="DockPanel">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Success}" Value="False">
+                                                    <Setter Property="Background" Value="#FFF5B18B"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </DockPanel.Style>
+                                    <TextBlock Margin="5,0,0,0" DockPanel.Dock="Left" Text="{Binding Name}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <TextBlock Margin="15,0,0,0" DockPanel.Dock="Left" Text="{Binding Message}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="300" />
+                                    <StackPanel DockPanel.Dock="Right">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding NodeId}" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <Button Content="{Binding NodeId}" Style="{StaticResource LinkButtonStyle}" Background="#33FFFFFF" FontSize="8" Click="NodeLinkButton_Click" ToolTip="Открыть на портале ДРО"/>
+                                    </StackPanel>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" Margin="5" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                        <StackPanel>
+                            <TextBox Margin="5" Text="{Binding UpdateModelConsoleOutput}" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0">
+                            </TextBox>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Tree" IsEnabled="False">
+                
+                <StackPanel Visibility="Hidden">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsUIEnabled}" Value="False">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <!--<Button
+                            Command="{Binding RunWorkplaceCommand}"
+                            CommandParameter="{x:Static local:WorkplaceCommand.BuildOrganizationTree}"
+                            Style="{StaticResource IconButtonStyle}">
+                            <Image x:Name="ReniewTreeIcon" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
+                        </Button>-->
+                        <!--<Button
+                            Command="{Binding RunWorkplaceCommand}"
+                            CommandParameter="{x:Static local:WorkplaceCommand.BuildOrganizationsTreeWithOffice}"
+                            >
+                            Switch
+                        </Button>-->
+                        
+                        <ListBox ItemsSource="{Binding DisplayTree.Offices}" BorderBrush="{x:Null}" SelectionChanged="ListBox_SelectionChanged">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Padding" Value="0"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource TagStyle}" Content="{Binding Name}" Background="{Binding Color}" MinWidth="30"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        
+                        
+                    </StackPanel>
+                    <!--
+                    <TreeView
+                        Height="500"
+                        x:Name="buildingTree"
+                        Grid.Row="2" BorderBrush="{x:Null}"
+                        HorizontalContentAlignment="Stretch"
+                        ItemsSource="{Binding DisplayTree.Nodes}"
+                        SelectedItemChanged="BuildingTree_SelectedItemChanged"
+                        >
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem">
+                                <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick" />
+                                <EventSetter Event="MouseRightButtonDown" Handler="TreeViewItem_MouseDoubleClick" />
+                                
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Node.Type}" Value="{x:Static local:ModelNodeType.Building}">
+                                        <Setter Property="IsExpanded" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Children, Mode=TwoWay}">
+                                <DockPanel>
+                                    <Grid Margin="0,0,5,2">
+                                        
+                                        <Ellipse Height="6" Width="6" VerticalAlignment="Center">
+                                            <Ellipse.Style>
+                                                <Style TargetType="Ellipse">
+                                                    <Setter Property="Fill" Value="LightSeaGreen"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Connected}" Value="False">
+                                                            <Setter Property="Visibility" Value="Hidden"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Ellipse.Style>
+                                        </Ellipse>
+                                    </Grid>
+                                    <TextBlock Text="{Binding Name}" MinWidth="150"/>
+                                    <Button Style="{StaticResource TagStyle}" Content="{Binding Node.DroId}" Background="{Binding Color}" Padding="2,0,2,0" Margin="2" MinWidth="30"/>
+                                    
+                                </DockPanel>
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+                    -->
+                        
+                </StackPanel>
+            </TabItem>
+            <!--WORKPALCE TAB-->
+            <TabItem Header="Building" IsEnabled="False">
+                <StackPanel Margin="10">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsUIEnabled}" Value="False">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <StackPanel Orientation="Vertical">
+
+                        <!--DEBUG UI-->
+                        <Expander
+                            IsExpanded="False"
+                            >
+                            <Expander.Header>
+                                <Label Content="Debug" FontWeight="Bold"/>
+                            </Expander.Header>
+                            <StackPanel Margin="8,3" HorizontalAlignment="Stretch">
+                                
+                            </StackPanel>
+                        </Expander>
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+            <!--COMMANDS TAB-->
+            <TabItem Header="Commands" IsEnabled="True">
+                <StackPanel Margin="10">
+                    <Expander
+                    IsExpanded="True"
+                    >
+                        <Expander.Header>
+                            <Label Content="Scratches" FontWeight="Bold"/>
+                        </Expander.Header>
+                        <DockPanel Margin="8,3" HorizontalAlignment="Stretch">
+                            <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertToSVG" Style="{StaticResource commadButtonStyle}">Convert To SVG</Button>
+                            <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertLevelsToSVG" Style="{StaticResource commadButtonStyle}">Convert Level To SVG</Button>
+                        </DockPanel>
+                    </Expander>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

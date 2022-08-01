@@ -1,0 +1,50 @@
+﻿<Window x:Class="AlfaMap.ErrorDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AlfaMap"
+        mc:Ignorable="d"
+        Title="Workplace Error" Height="320" Width="500" MinHeight="320" MinWidth="500">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Style.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid Margin="20">
+        <DockPanel LastChildFill="False">
+            <RichTextBox
+                Margin="0,5,0,5"
+                Name="richTB"
+                DockPanel.Dock="Top"
+                IsReadOnly="True"
+                MaxHeight="200"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto" BorderBrush="{x:Null}"
+                >
+                <RichTextBox.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </RichTextBox.Resources>
+                <FlowDocument>
+                    <Paragraph>
+                        <Run Text="{Binding DocName, Mode=OneWay}" FontWeight="Bold" />
+                    </Paragraph>
+                    <Paragraph>
+                        <Run Text="{Binding RunException, Mode=OneWay}" Foreground="Red" />
+                    </Paragraph>
+                    <Paragraph>
+                        <Run Text="{Binding RunException.InnerException, Mode=OneWay}" />
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+            <DockPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                <Button x:Name="SendReportButton" Click="SendReportButton_Click">Отправить</Button>
+                <Button x:Name="CloseButton" Click="CloseButton_Click">Закрыть</Button>
+            </DockPanel>
+        </DockPanel>
+    </Grid>
+</Window>

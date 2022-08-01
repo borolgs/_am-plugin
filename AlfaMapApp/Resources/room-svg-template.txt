@@ -1,0 +1,25 @@
+<svg version="1.1" id="{{id}}" width="{{width}}" height="{{height}}"
+  viewBox="0 0 {{width}} {{height}}">
+  <g>
+    <g id="room">
+      <path id="{{id}}" fillRule="evenodd" d="{{path}}" fill="#d9d9d9">
+        <title>{{name}}</title>
+      </path>
+    </g>
+    <g id="workplaces">
+      {{#each workplaces}}
+      <path id="{{id}}" fillRule="evenodd" fill="white" d="{{path}}" stroke="#b5b5b5" stroke-width="0.2">
+        <title>
+          {{name}}
+        </title>
+      </path>
+      {{/each}}
+    </g>
+    <!--<g id="elements">
+      {{#each elements}}
+      <path fillRule="evenodd" fill="#f0f0f0" d="{{path}}" stroke="#d9d9d9" stroke-width="0.2">
+      </path>
+      {{/each}}
+    </g> -->
+  </g>
+</svg>
