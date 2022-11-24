@@ -59,12 +59,17 @@
                 <TextBlock Text="{Binding StatusMessage}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
             </Grid>
             <!--</StackPanel>-->
-            
+
         </StackPanel>
         <TabControl Grid.Row="1">
             <!--WORKPALCE TREE TAB-->
             <TabItem Header="SyncResult">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="170*"/>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="47*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="auto" MaxHeight="200px"/>
@@ -77,8 +82,8 @@
                              SelectionChanged="SyncResultsListBox_SelectionChanged"
                              BorderBrush="{x:Null}"
                              ScrollViewer.VerticalScrollBarVisibility="Auto"
-                             HorizontalContentAlignment="Stretch">
-                        
+                             HorizontalContentAlignment="Stretch" Grid.ColumnSpan="3">
+
                         <!--<ListBoxItem>
                             <DockPanel LastChildFill="False" Background="#FFF5B18B" Width="200">
                                 <TextBlock DockPanel.Dock="Left" Text="НГ-200-1" FontWeight="Bold"/>
@@ -116,7 +121,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" Margin="5" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
+                    <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" Margin="5,5,5,5" VerticalScrollBarVisibility="Auto" CanContentScroll="True">
                         <StackPanel>
                             <TextBox Margin="5" Text="{Binding UpdateModelConsoleOutput}" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0">
                             </TextBox>
@@ -125,7 +130,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Tree" IsEnabled="False">
-                
+
                 <StackPanel Visibility="Hidden">
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
@@ -150,7 +155,7 @@
                             >
                             Switch
                         </Button>-->
-                        
+
                         <ListBox ItemsSource="{Binding DisplayTree.Offices}" BorderBrush="{x:Null}" SelectionChanged="ListBox_SelectionChanged">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
@@ -168,8 +173,8 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        
-                        
+
+
                     </StackPanel>
                     <!--
                     <TreeView
@@ -218,7 +223,7 @@
                         </TreeView.ItemTemplate>
                     </TreeView>
                     -->
-                        
+
                 </StackPanel>
             </TabItem>
             <!--WORKPALCE TAB-->
@@ -244,7 +249,7 @@
                                 <Label Content="Debug" FontWeight="Bold"/>
                             </Expander.Header>
                             <StackPanel Margin="8,3" HorizontalAlignment="Stretch">
-                                
+
                             </StackPanel>
                         </Expander>
                     </StackPanel>
@@ -252,19 +257,30 @@
             </TabItem>
             <!--COMMANDS TAB-->
             <TabItem Header="Commands" IsEnabled="True">
-                <StackPanel Margin="10">
-                    <Expander
-                    IsExpanded="True"
-                    >
-                        <Expander.Header>
-                            <Label Content="Scratches" FontWeight="Bold"/>
-                        </Expander.Header>
-                        <DockPanel Margin="8,3" HorizontalAlignment="Stretch">
-                            <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertToSVG" Style="{StaticResource commadButtonStyle}">Convert To SVG</Button>
-                            <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertLevelsToSVG" Style="{StaticResource commadButtonStyle}">Convert Level To SVG</Button>
-                        </DockPanel>
-                    </Expander>
-                </StackPanel>
+                <Grid Margin="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Row="0" Margin="8,3" HorizontalAlignment="Stretch">
+                        <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertToSVG" Style="{StaticResource commadButtonStyle}">Convert To SVG</Button>
+                        <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertLevelsToSVG" Style="{StaticResource commadButtonStyle}">Convert Level To SVG</Button>
+                        <Button Command="{Binding RunScratchCommand}" CommandParameter="BatchConvert" Style="{StaticResource commadButtonStyle}">Batch Convert</Button>
+                    </DockPanel>
+
+                    <ScrollViewer Grid.Row="1" Margin="5" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
+                        
+                        <StackPanel>
+                            <TextBox Margin="5" Text="{Binding ConsoleOutput}" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0">
+                                <TextBox.Style>
+                                    <Style TargetType="{x:Type TextBox}"></Style>
+                                </TextBox.Style>
+                            </TextBox>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

@@ -53,12 +53,12 @@ namespace AlfaMap {
 
         private void ReloadApp() {
             try {
-                string devAppPath = @"C:\Users\borodatov.os\source\repos\AlfaMapApp\AlfaMapApp\bin\Debug\AlfaMapApp.dll";
+                string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string devAppPath = Path.Combine(dir, @"..\..\..\AlfaMapApp\bin\Debug\AlfaMapApp.dll");
                 string appPath;
                 if (Debug && File.Exists(devAppPath)) {
                     appPath = devAppPath;
                 } else {
-                    string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                     appPath = Path.Combine(dir, "AlfaMapApp.dll");
                 }
 

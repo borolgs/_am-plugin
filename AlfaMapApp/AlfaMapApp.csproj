@@ -34,27 +34,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugHost|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DebugHost\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugApp|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DebugApp\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Temp|AnyCPU'">
-    <OutputPath>bin\Temp\</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=5.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Costura.Fody.5.7.0\lib\netstandard1.0\Costura.dll</HintPath>
@@ -63,6 +42,10 @@
     <Reference Include="Handlebars, Version=2.0.7.0, Culture=neutral, PublicKeyToken=22225d0bf33cd661, processorArchitecture=MSIL">
       <HintPath>..\packages\Handlebars.Net.2.0.7\lib\net46\Handlebars.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -299,6 +282,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Batch\BatchConverter.cs" />
+    <Compile Include="Batch\BatchConvertDialog.xaml.cs">
+      <DependentUpon>BatchConvertDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Batch\BatchConvertViewModel.cs" />
+    <Compile Include="Batch\BatchConvertModel.cs" />
     <Compile Include="Common\Result.cs" />
     <Compile Include="Common\ImageUtils.cs" />
     <Compile Include="Common\Matrix.cs" />
@@ -316,6 +305,8 @@
     <Compile Include="Converter2d\RoomTo2DConverter.cs" />
     <Compile Include="Converter2d\SVGConverter.cs" />
     <Compile Include="DataSync\UpdateNodeResult.cs" />
+    <Compile Include="Shared\RevitViewModelBase.cs" />
+    <Compile Include="Shared\UseExcel.cs" />
     <Compile Include="State\BuildingTree.cs" />
     <Compile Include="DataSync\Client.cs" />
     <Compile Include="DataSync\APITypes.cs" />
@@ -352,6 +343,10 @@
     <Compile Include="Revit\Collector.cs" />
     <Compile Include="Revit\ParamCreator.cs" />
     <Compile Include="Revit\Utils.cs" />
+    <Page Include="Batch\BatchConvertDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

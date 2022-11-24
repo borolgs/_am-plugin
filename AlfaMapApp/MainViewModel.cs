@@ -29,6 +29,7 @@ using AlfaMap.DataSync;
 using AlfaMap.State;
 using AlfaMap.Converter2d;
 using Newtonsoft.Json.Serialization;
+using AlfaMap.Batch;
 
 namespace AlfaMap
 {
@@ -70,6 +71,20 @@ namespace AlfaMap
             get {
                 return runScratchCommand ?? (runScratchCommand = new RelayCommand(obj => {
                     var command = (string)obj;
+
+                    if (command == "BatchConvert") {
+                        if (batchConvertDialog == null) {
+                            batchConvertDialog = new BatchConvertDialog(batchConvertViewModel);
+                            batchConvertDialog.Topmost = true;
+                            batchConvertDialog.Closed += (sender, args) => { this.batchConvertDialog = null; };
+                        }
+                        batchConvertDialog.Show();
+                        return;
+                    }
+
+                    externalHandler.Output = output => {
+                        ConsoleOutput = output;
+                    };
                     externalHandler.Method = uiapp => {
                         var doc = uiapp.ActiveUIDocument.Document;
                         try {
@@ -150,6 +165,15 @@ namespace AlfaMap
         #endregion
 
         #region Main Properties
+        private string consoleOutput;
+        public string ConsoleOutput {
+            get { return consoleOutput; }
+            set {
+                consoleOutput = value;
+                OnPropertyChanged();
+            }
+        }
+
         private BuildingTree FreshTree
         {
             get
@@ -206,31 +230,11 @@ namespace AlfaMap
             }
         }
 
-        private bool isSynced = false;
-        public bool IsSynced
-        {
-            get { return isSynced; }
-            set
-            {
-                isSynced = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool isLoading = false;
-        public bool IsLoading
-        {
-            get { return isLoading; }
-            set
-            {
-                isLoading = value;
-                OnPropertyChanged();
-            }
-        }
-
         private string updateModelConsoleOutput;
         public string UpdateModelConsoleOutput {
-            get { return updateModelConsoleOutput; }
+            get { 
+                return updateModelConsoleOutput; 
+            }
             set {
                 updateModelConsoleOutput = value;
                 OnPropertyChanged();
@@ -378,6 +382,10 @@ namespace AlfaMap
                 OnPropertyChanged();
             }
         }
+
+        private BatchConvertDialog batchConvertDialog;
+        private BatchConvertViewModel batchConvertViewModel = new BatchConvertViewModel();
+
 
         public MainViewModel()
         {
