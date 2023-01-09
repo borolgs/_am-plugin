@@ -72,19 +72,18 @@ namespace AlfaMap
                 return runScratchCommand ?? (runScratchCommand = new RelayCommand(obj => {
                     var command = (string)obj;
 
-                    if (command == "BatchConvert") {
-                        if (batchConvertDialog == null) {
-                            batchConvertDialog = new BatchConvertDialog(batchConvertViewModel);
-                            batchConvertDialog.Topmost = true;
-                            batchConvertDialog.Closed += (sender, args) => { this.batchConvertDialog = null; };
-                        }
-                        batchConvertDialog.Show();
-                        return;
-                    }
+                    //if (command == "BatchConvert") {
+                    //    if (batchConvertDialog == null) {
+                    //        batchConvertDialog = new BatchConvertDialog(batchConvertViewModel);
+                    //        batchConvertDialog.Closed += (sender, args) => { this.batchConvertDialog = null; };
+                    //    }
+                    //    batchConvertDialog.Show();
+                    //    return;
+                    //}
 
-                    externalHandler.Output = output => {
-                        ConsoleOutput = output;
-                    };
+                    //externalHandler.Output = output => {
+                    //    ConsoleOutput = output;
+                    //};
                     externalHandler.Method = uiapp => {
                         var doc = uiapp.ActiveUIDocument.Document;
                         try {
@@ -543,10 +542,10 @@ namespace AlfaMap
                 (await handler.LoadData()).Unwrap();
 
                 externalHandler.Method = uiapp => {
-                    string commandConsoleOutString;
-                    TextWriter originalConsoleOut = Console.Out;
-                    using (var writer = new StringWriter()) {
-                        Console.SetOut(writer);
+                    //string commandConsoleOutString;
+                    //TextWriter originalConsoleOut = Console.Out;
+                    //using (var writer = new StringWriter()) {
+                        //Console.SetOut(writer);
                         using (Transaction t = new Transaction(Doc)) {
                             try {
                                 t.Start("Sync");
@@ -567,11 +566,11 @@ namespace AlfaMap
                             }  
                         }
 
-                        writer.Flush();
-                        commandConsoleOutString = writer.GetStringBuilder().ToString();
-                        Console.SetOut(originalConsoleOut);
-                        UpdateModelConsoleOutput = commandConsoleOutString;
-                    }
+                    //    writer.Flush();
+                    //    commandConsoleOutString = writer.GetStringBuilder().ToString();
+                    //    Console.SetOut(originalConsoleOut);
+                    //    UpdateModelConsoleOutput = commandConsoleOutString;
+                    //}
                     Status = Status.Nothing;
                 };
                 externalEvent.Raise();

@@ -266,7 +266,7 @@
                     <DockPanel Grid.Row="0" Margin="8,3" HorizontalAlignment="Stretch">
                         <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertToSVG" Style="{StaticResource commadButtonStyle}">Convert To SVG</Button>
                         <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertLevelsToSVG" Style="{StaticResource commadButtonStyle}">Convert Level To SVG</Button>
-                        <Button Command="{Binding RunScratchCommand}" CommandParameter="BatchConvert" Style="{StaticResource commadButtonStyle}">Batch Convert</Button>
+                        <!--<Button Command="{Binding RunScratchCommand}" CommandParameter="BatchConvert" Style="{StaticResource commadButtonStyle}">Batch Convert</Button>-->
                     </DockPanel>
 
                     <ScrollViewer Grid.Row="1" Margin="5" VerticalScrollBarVisibility="Auto" CanContentScroll="False">

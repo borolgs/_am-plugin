@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace AlfaMap.Batch {
     class BatchConverter {
         //private string Root = "C:\\Users\\borodatov.os\\Documents\\tmp\\background-handle-test";
-        private string Root = "C:\\Users\\borodatov.os\\Documents\\tmp";
+        private string Root = @"T:\IT\Офисная недвижимость\Москва и Регионы";
         private UIApplication uiapp;
         private List<ConvertFileResult> results = new List<ConvertFileResult>();
 
@@ -96,13 +96,17 @@ namespace AlfaMap.Batch {
             sw.Start();
 
             try {
-                Console.WriteLine($"Filepath: {path}");
-
                 {
                     var match = Regex.Match(path, @"\.\d{4}\.rvt");
                     if (match.Success) {
-                        Console.WriteLine($"Skip: {path}");
                         result.Error = new Exception("It is a backup document");
+                        result.Skip = true;
+                        stopsw();
+                        return result;
+                    }
+                    if(path.ToLower().Contains("архив") || path.ToLower().Contains("процесс"))
+                    {
+                        result.Error = new Exception("It is a WIP document");
                         result.Skip = true;
                         stopsw();
                         return result;
@@ -111,8 +115,12 @@ namespace AlfaMap.Batch {
 
                 var fileInfo = new FileInfo(path);
                 var rvtInfo = BasicFileInfo.Extract(path);
-                Console.WriteLine($"v: {rvtInfo.Format}, central: {rvtInfo.IsCentral}, edited: {fileInfo.LastWriteTime}");
-
+                if (rvtInfo.Format != "2020") {
+                    result.Error = new Exception("Wrong version: " + rvtInfo.Format);
+                    result.Skip = true;
+                    stopsw();
+                    return result;
+                }
                 result.RvtVersion = rvtInfo.Format;
                 result.UpdatedAt = fileInfo.LastWriteTime;
 
@@ -150,13 +158,16 @@ namespace AlfaMap.Batch {
             };
             try {
 
-                Console.WriteLine($"Filepath: {path}");
-
                 {
                     var match = Regex.Match(path, @"\.\d{4}\.rvt");
                     if (match.Success) {
-                        Console.WriteLine($"Skip: {path}");
                         result.Error = new Exception("It is a backup document");
+                        result.Skip = true;
+                        return result;
+                    }
+                    if (path.ToLower().Contains("архив") || path.ToLower().Contains("процесс"))
+                    {
+                        result.Error = new Exception("It is a WIP document");
                         result.Skip = true;
                         return result;
                     }
@@ -164,7 +175,6 @@ namespace AlfaMap.Batch {
 
                 var fileInfo = new FileInfo(path);
                 var rvtInfo = BasicFileInfo.Extract(path);
-                Console.WriteLine($"v: {rvtInfo.Format}, central: {rvtInfo.IsCentral}, edited: {fileInfo.LastWriteTime}");
 
                 result.RvtVersion = rvtInfo.Format;
                 result.UpdatedAt = fileInfo.LastWriteTime;

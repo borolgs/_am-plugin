@@ -13,51 +13,108 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Command="{Binding RunCommand}" CommandParameter="QuickCheck" Style="{StaticResource commadButtonStyle}">Quick Check All</Button>
-            <Button Command="{Binding RunCommand}" CommandParameter="Check" Style="{StaticResource commadButtonStyle}">Check All</Button>
-            <Button Command="{Binding RunCommand}" CommandParameter="Convert" Style="{StaticResource commadButtonStyle}">Convert All</Button>
-            <Button Command="{Binding RunCommand}" CommandParameter="Export" Style="{StaticResource commadButtonStyle}">Export to Excel</Button>
-        </StackPanel>
-        <ScrollViewer Grid.Row="1" Margin="5" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
-            <StackPanel>
-                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding BatchConvertResults}">
-                    <DataGrid.Resources>
-                        <Style TargetType="DataGrid">
-                            <Setter Property="BorderBrush" Value="#DDD"/>
-                            <Setter Property="HorizontalGridLinesBrush" Value="#DDD"/>
-                            <Setter Property="VerticalGridLinesBrush" Value="#DDD"/>
-                        </Style>
-                        <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="White"/>
-                            <Setter Property="BorderBrush" Value="#DDD"/>
-                            <Setter Property="BorderThickness" Value="0 0 1 1"/>
-                            <Setter Property="Padding" Value="3"/>
-                        </Style>
-                        <Style BasedOn="{StaticResource {x:Type DataGridRowHeader}}" TargetType="DataGridRowHeader">
-                            <Setter Property="Background" Value="White"/>
-                        </Style>
-                    </DataGrid.Resources>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="BuildingId" Binding="{Binding Path=BuildingId}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Path" Binding="{Binding Path=FilePath}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="UpdatedAt" Binding="{Binding Path=UpdatedAt}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Error" Binding="{Binding Path=ErrorMessage}" IsReadOnly="True" />
-                        <DataGridTextColumn Header="Time" Binding="{Binding Path=ProcessingTime}" IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
+    <TabControl SelectedIndex="1">
+        <!--WORKPALCE TREE TAB-->
+        <TabItem Header="Batch Convert">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Button Command="{Binding RunCommand}" CommandParameter="QuickCheck" Style="{StaticResource commadButtonStyle}">Quick Check All</Button>
+                    <Button Command="{Binding RunCommand}" CommandParameter="Check" Style="{StaticResource commadButtonStyle}">Check All</Button>
+                    <Button Command="{Binding RunCommand}" CommandParameter="Convert" Style="{StaticResource commadButtonStyle}">Convert All</Button>
+                    <Button Command="{Binding RunCommand}" CommandParameter="Export" Style="{StaticResource commadButtonStyle}">Export to Excel</Button>
+                </StackPanel>
+                <ScrollViewer Grid.Row="1" Margin="5" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
+                    <StackPanel>
+                        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding BatchConvertResults}">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGrid">
+                                    <Setter Property="BorderBrush" Value="#DDD"/>
+                                    <Setter Property="HorizontalGridLinesBrush" Value="#DDD"/>
+                                    <Setter Property="VerticalGridLinesBrush" Value="#DDD"/>
+                                </Style>
+                                <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="#DDD"/>
+                                    <Setter Property="BorderThickness" Value="0 0 1 1"/>
+                                    <Setter Property="Padding" Value="3"/>
+                                </Style>
+                                <Style BasedOn="{StaticResource {x:Type DataGridRowHeader}}" TargetType="DataGridRowHeader">
+                                    <Setter Property="Background" Value="White"/>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="BuildingId" Binding="{Binding Path=BuildingId}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Path" Binding="{Binding Path=FilePath}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="UpdatedAt" Binding="{Binding Path=UpdatedAt}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Error" Binding="{Binding Path=ErrorMessage}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Time" Binding="{Binding Path=ProcessingTime}" IsReadOnly="True" />
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-                <TextBox Margin="5" Text="{Binding ConsoleOutput}" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0">
-                    <TextBox.Style>
-                        <Style TargetType="{x:Type TextBox}"></Style>
-                    </TextBox.Style>
-                </TextBox>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+                        <TextBox Margin="5" Text="{Binding ConsoleOutput}" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}"></Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </StackPanel>
+                </ScrollViewer>
+
+            </Grid>
+        </TabItem>
+        <TabItem Header="Coworking Convert">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Button Command="{Binding RunCommand}" CommandParameter="ReloadCoworkingList" Style="{StaticResource commadButtonStyle}">Reload</Button>
+                </StackPanel>
+                <ScrollViewer Grid.Row="1" Margin="5" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
+                    <StackPanel>
+                        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Coworkings}">
+                            <DataGrid.Resources>
+                                <Style TargetType="DataGrid">
+                                    <Setter Property="BorderBrush" Value="#DDD"/>
+                                    <Setter Property="HorizontalGridLinesBrush" Value="#DDD"/>
+                                    <Setter Property="VerticalGridLinesBrush" Value="#DDD"/>
+                                </Style>
+                                <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="#DDD"/>
+                                    <Setter Property="BorderThickness" Value="0 0 1 1"/>
+                                    <Setter Property="Padding" Value="3"/>
+                                </Style>
+                                <Style BasedOn="{StaticResource {x:Type DataGridRowHeader}}" TargetType="DataGridRowHeader">
+                                    <Setter Property="Background" Value="White"/>
+                                </Style>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn Binding="{Binding Path=Selected}">
+                                    <DataGridCheckBoxColumn.Header>
+                                        <CheckBox x:Name="SelectAllCheckbox" Checked="SelectAllCheckbox_Checked" Unchecked="SelectAllCheckbox_Unchecked" />
+                                    </DataGridCheckBoxColumn.Header>
+                                </DataGridCheckBoxColumn>
+                                <DataGridTextColumn Header="BuildingId" Binding="{Binding Path=BuildingId}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Id" Binding="{Binding Path=Id}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="Address" Binding="{Binding Path=Address}" IsReadOnly="True" />
+                                <DataGridTextColumn Header="File" Binding="{Binding Path=FilePath}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <TextBox Margin="5" Text="{Binding ConsoleOutput}" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}"></Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </StackPanel>
+                </ScrollViewer>
+
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

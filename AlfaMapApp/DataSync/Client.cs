@@ -11,8 +11,8 @@ using AlfaMap.Common;
 namespace AlfaMap.DataSync {
     public class Client {
         private readonly HttpClient httpClient;
-        //private readonly string urlBase = "http://localhost:4000/api/v1";
-        private readonly string urlBase = "http://locvis-dev/beta/api/v1";
+        private readonly string urlBase = "http://localhost:3030/api/v1";
+        //private readonly string urlBase = "http://locvis-dev/beta/api/v1";
 
         public Client(HttpClient httpClient) {
             this.httpClient = httpClient;
