@@ -103,10 +103,7 @@ namespace AlfaMap.Converter2d
 
         public string Convert(ModelNode roomNode)
         {
-            //var SVGs = new List<string>();
 
-            //foreach (Node roomNode in roomNodes)
-            //{
             RoomData roomData = roomConverter.Convert(roomNode);
             foreach (ModelNode workplaceNode in roomNode.Children)
             {
@@ -117,11 +114,21 @@ namespace AlfaMap.Converter2d
             var roomSvg = CreateRoomSVG(roomData);
             roomSvg = System.Web.HttpUtility.HtmlDecode(roomSvg);
             return roomSvg;
+        }
 
-            //    SVGs.Add(roomSvg);
-            //}
+        public string ConvertForce(ModelNode roomNode, List<ModelNode> workplaceNodes, string name)
+        {
 
-            //return SVGs;
+            RoomData roomData = roomConverter.Convert(roomNode);
+            foreach (ModelNode workplaceNode in workplaceNodes)
+            {
+                var wpData = workplaceConverter.ConvertWorkplace(workplaceNode);
+                roomData.Workplaces.Add(wpData);
+            }
+
+            var roomSvg = CreateRoomSVG(roomData, name);
+            roomSvg = System.Web.HttpUtility.HtmlDecode(roomSvg);
+            return roomSvg;
         }
 
         string CreateLevelSVG(LevelData level) {
@@ -185,7 +192,7 @@ namespace AlfaMap.Converter2d
             return result;
         }
 
-        string CreateRoomSVG(RoomData room)
+        string CreateRoomSVG(RoomData room, string forceName = null)
         {
             //TODO move to file
             string source = Resources.room_svg_template;
@@ -194,10 +201,10 @@ namespace AlfaMap.Converter2d
 
             var svgData = new
             {
-                id = room.Name,
+                id = forceName ?? room.Name,
                 width = DoubleToSVGString(room.LegacyBBox.Max.X - room.LegacyBBox.Min.X),
                 height = DoubleToSVGString(room.LegacyBBox.Max.Y - room.LegacyBBox.Min.Y),
-                name = room.Name,
+                name = forceName ?? room.Name,
                 path = ConvertBoundariesToPath(room.LegacyBBox, room.LegacyBoundaires),
                 workplaces = new List<object>()
             };
@@ -206,8 +213,8 @@ namespace AlfaMap.Converter2d
             {
                 svgData.workplaces.Add(new
                 {
-                    id = wpData.Name,
-                    name = wpData.Name,
+                    id = forceName != null ? forceName + "-" + wpData.Name : wpData.Name,
+                    name = forceName != null ? forceName + "-" + wpData.Name : wpData.Name,
                     path = ConvertBoundariesToPath(room.LegacyBBox, wpData.LegacyBoundaires)
                 }); ;
             }

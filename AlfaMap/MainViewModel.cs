@@ -54,7 +54,7 @@ namespace AlfaMap {
         private void ReloadApp() {
             try {
                 string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string devAppPath = @"C:\Users\U_M12EE\source\repos\alfalife-revit-plugin\AlfaMapApp\bin\Debug\AlfaMapApp.dll";
+                string devAppPath = @"C:\Users\borodatov.os\source\repos\alfalife-revit-plugin\AlfaMapApp\bin\Debug\AlfaMapApp.dll";
                 string appPath;
                 if (Debug && File.Exists(devAppPath)) {
                     appPath = devAppPath;

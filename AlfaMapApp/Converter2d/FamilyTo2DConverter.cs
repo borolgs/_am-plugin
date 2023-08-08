@@ -30,7 +30,7 @@ namespace AlfaMap.Converter2d
         {
             var workplace = workplaceNode.Element as FamilyInstance;
 
-            var name = workplaceNode.Node?.name;
+            var name = workplaceNode.Node?.name ?? workplaceNode.Element.LookupParameter("AB_W_Number")?.AsString();
             var bbox = workplace.get_BoundingBox(null);
             var data = new WorkplaceData
             {

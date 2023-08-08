@@ -30,6 +30,9 @@ using AlfaMap.State;
 using AlfaMap.Converter2d;
 using Newtonsoft.Json.Serialization;
 using AlfaMap.Batch;
+using System.Security.Cryptography;
+using Workplace.Snapshots;
+using Autodesk.Revit.DB.Architecture;
 
 namespace AlfaMap
 {
@@ -72,6 +75,8 @@ namespace AlfaMap
                 return runScratchCommand ?? (runScratchCommand = new RelayCommand(obj => {
                     var command = (string)obj;
 
+                    
+
                     //if (command == "BatchConvert") {
                     //    if (batchConvertDialog == null) {
                     //        batchConvertDialog = new BatchConvertDialog(batchConvertViewModel);
@@ -84,66 +89,133 @@ namespace AlfaMap
                     //externalHandler.Output = output => {
                     //    ConsoleOutput = output;
                     //};
+                    //externalHandler.Method = uiapp => {
+                    //    var doc = uiapp.ActiveUIDocument.Document;
+                    //    try {
+                    //        if (command == "ConvertToSVG") {
+                    //            var dialog = new TaskDialog("Экспорт помещений в SVG");
+                    //            var selectedElement = uiapp.ActiveUIDocument.Selection.GetElementIds().Select(doc.GetElement).FirstOrDefault();
+                    //            if (selectedElement == null) {
+                    //                dialog.MainInstruction = "Ничего не выбрано";
+                    //                dialog.MainContent = "Выберите помещение-коворкинг и повторите команду";
+                    //                dialog.Show();
+                    //                return;
+                    //            }
+                    //            handler.InitFromDocument(doc);
+                    //            var selectedNode = handler.GetNode(selectedElement.UniqueId);
+                    //            bool validNode = selectedNode?.Node?.type.id == 4 && selectedNode.Children.Where(workplaceNode => workplaceNode.Node?.type?.id == 5).Count() > 0;
+                    //            if (!validNode) {
+                    //                dialog.MainInstruction = "Выбранный элемент не помещение-коворкинг";
+                    //                dialog.MainContent = "Выберите помещение-коворкинг и повторите команду";
+                    //                dialog.Show();
+                    //                return;
+                    //            }
+                    //            var converter = new SVGConverter();
+                    //            string roomSvg = converter.Convert(selectedNode);
+                    //            string svgPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{selectedNode.Node?.name ?? "room"}.svg");
+                    //            File.WriteAllText(svgPath, roomSvg, Encoding.UTF8);
+                    //            //Clipboard.SetData(DataFormats.Text, roomSvg);
+                    //            Clipboard.SetText(roomSvg, TextDataFormat.UnicodeText);
+                    //            dialog.MainInstruction = $"SVG помещения {selectedNode.Node.name} успешно экспортирован.";
+                    //            dialog.MainContent = $"{svgPath}\nПроверить можно здесь <a href=\"https://www.svgviewer.dev/\">svgviewer.dev</a>.\nSVG уже скопирован в буфер обмена.";
+                    //            dialog.Show();
+                    //        }
+
+                    //        if (command == "ConvertLevelsToSVG") {
+                    //            handler.InitFromDocument(doc);
+                    //            //var level = uiapp.ActiveUIDocument.ActiveView.GenLevel;
+                    //            //var levelNode = handler.GetNode(level.UniqueId);
+                    //            //var converter = new SVGConverter(uiapp);
+                    //            //string roomSvg = converter.ConvertLevel(levelNode);
+                    //            //string svgPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{levelNode.Node?.name ?? "level"}.svg");
+                    //            //File.WriteAllText(svgPath, roomSvg, Encoding.UTF8);
+
+                    //            var rootNode = handler.Tree.Root;
+                    //            var converter = new BuildingTo2DConverter();
+                    //            var data = converter.Convert(rootNode);
+
+                    //            var jsonSettings = new JsonSerializerSettings { 
+                    //                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    //                Converters = new JsonConverter[] {
+                    //                    new BBoxConverter(),
+                    //                    new XYZConverter(),
+                    //                    new BoundariesConverter(),
+                    //                    new CurveConverter(),
+                    //                },
+                    //                NullValueHandling = NullValueHandling.Ignore,
+                    //            };
+                    //            var json = JsonConvert.SerializeObject(data, jsonSettings);
+                    //            string svgPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{doc.Title}.json");
+                    //            File.WriteAllText(svgPath, json, Encoding.UTF8);
+                    //        }
+                    //    } catch (Exception e) {
+                    //        RunException = e.InnerException ?? e;
+                    //    }
+                    //};
+
                     externalHandler.Method = uiapp => {
-                        var doc = uiapp.ActiveUIDocument.Document;
                         try {
-                            if (command == "ConvertToSVG") {
+                            if (command == "GetModelSnapshot")
+                            {
+                                var handler = new CreateSnapshothandler(uiapp);
+                                handler.Run();
+                            }
+
+                            if (command == "ConvertToSVG"){
                                 var dialog = new TaskDialog("Экспорт помещений в SVG");
-                                var selectedElement = uiapp.ActiveUIDocument.Selection.GetElementIds().Select(doc.GetElement).FirstOrDefault();
-                                if (selectedElement == null) {
+                                var selectedElements = uiapp.ActiveUIDocument.Selection.GetElementIds().Select(doc.GetElement).ToList();
+                                if (selectedElements.Count == 0)
+                                {
                                     dialog.MainInstruction = "Ничего не выбрано";
                                     dialog.MainContent = "Выберите помещение-коворкинг и повторите команду";
                                     dialog.Show();
                                     return;
                                 }
+
                                 handler.InitFromDocument(doc);
-                                var selectedNode = handler.GetNode(selectedElement.UniqueId);
-                                bool validNode = selectedNode?.Node?.type.id == 4 && selectedNode.Children.Where(workplaceNode => workplaceNode.Node?.type?.id == 5).Count() > 0;
-                                if (!validNode) {
-                                    dialog.MainInstruction = "Выбранный элемент не помещение-коворкинг";
-                                    dialog.MainContent = "Выберите помещение-коворкинг и повторите команду";
-                                    dialog.Show();
-                                    return;
-                                }
                                 var converter = new SVGConverter();
-                                string roomSvg = converter.Convert(selectedNode);
-                                string svgPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{selectedNode.Node?.name ?? "room"}.svg");
-                                File.WriteAllText(svgPath, roomSvg, Encoding.UTF8);
-                                //Clipboard.SetData(DataFormats.Text, roomSvg);
-                                Clipboard.SetText(roomSvg, TextDataFormat.UnicodeText);
-                                dialog.MainInstruction = $"SVG помещения {selectedNode.Node.name} успешно экспортирован.";
-                                dialog.MainContent = $"{svgPath}\nПроверить можно здесь <a href=\"https://www.svgviewer.dev/\">svgviewer.dev</a>.\nSVG уже скопирован в буфер обмена.";
-                                dialog.Show();
+
+                                if (selectedElements.Count == 1)
+                                {
+                                    var selectedNode = handler.GetNode(selectedElements[0].UniqueId);
+                                    bool validNode = selectedNode?.Node?.type.id == 4 && selectedNode.Children.Where(workplaceNode => workplaceNode.Node?.type?.id == 5).Count() > 0;
+                                    if (!validNode)
+                                    {
+                                        dialog.MainInstruction = "Выбранный элемент не помещение-коворкинг";
+                                        dialog.MainContent = "Выберите помещение-коворкинг и повторите команду";
+                                        dialog.Show();
+                                        return;
+                                    }
+
+                                    string roomSvg = converter.Convert(selectedNode);
+                                    string svgPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{selectedNode.Node?.name ?? "room"}.svg");
+                                    File.WriteAllText(svgPath, roomSvg, Encoding.UTF8);
+                                    Clipboard.SetText(roomSvg, TextDataFormat.UnicodeText);
+                                    dialog.MainInstruction = $"SVG помещения {selectedNode.Node?.name ?? ""} успешно экспортирован.";
+                                    dialog.MainContent = $"{svgPath}\nПроверить можно здесь <a href=\"https://www.svgviewer.dev/\">svgviewer.dev</a>.\nSVG уже скопирован в буфер обмена.";
+                                    dialog.Show();
+                                } else {
+                                    // TEMP!!!!
+                                    var room = selectedElements.Where(e => e is Room).First();
+                                    var selectedRoomNode = handler.GetNode(room.UniqueId);
+                                    selectedElements.Remove(room);
+
+                                    var selectedNodes = selectedElements.Select(e => handler.GetNode(e.UniqueId)).ToList();
+
+                                    var roomName = room.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).AsString();
+
+                                    string roomSvg = converter.ConvertForce(selectedRoomNode, selectedNodes, roomName);
+                                    string svgPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{roomName}.svg");
+                                    File.WriteAllText(svgPath, roomSvg, Encoding.UTF8);
+                                    Clipboard.SetText(roomSvg, TextDataFormat.UnicodeText);
+                                    dialog.MainInstruction = $"SVG помещения {selectedRoomNode.Node?.name ?? ""} успешно экспортирован.";
+                                    dialog.MainContent = $"{svgPath}\nПроверить можно здесь <a href=\"https://www.svgviewer.dev/\">svgviewer.dev</a>.\nSVG уже скопирован в буфер обмена.";
+                                    dialog.Show();
+                                }
+                                
                             }
-
-                            if (command == "ConvertLevelsToSVG") {
-                                handler.InitFromDocument(doc);
-                                //var level = uiapp.ActiveUIDocument.ActiveView.GenLevel;
-                                //var levelNode = handler.GetNode(level.UniqueId);
-                                //var converter = new SVGConverter(uiapp);
-                                //string roomSvg = converter.ConvertLevel(levelNode);
-                                //string svgPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{levelNode.Node?.name ?? "level"}.svg");
-                                //File.WriteAllText(svgPath, roomSvg, Encoding.UTF8);
-
-                                var rootNode = handler.Tree.Root;
-                                var converter = new BuildingTo2DConverter();
-                                var data = converter.Convert(rootNode);
-
-                                var jsonSettings = new JsonSerializerSettings { 
-                                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                                    Converters = new JsonConverter[] {
-                                        new BBoxConverter(),
-                                        new XYZConverter(),
-                                        new BoundariesConverter(),
-                                        new CurveConverter(),
-                                    },
-                                    NullValueHandling = NullValueHandling.Ignore,
-                                };
-                                var json = JsonConvert.SerializeObject(data, jsonSettings);
-                                string svgPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{doc.Title}.json");
-                                File.WriteAllText(svgPath, json, Encoding.UTF8);
-                            }
-                        } catch (Exception e) {
+                        }
+                        catch (Exception e) {
                             RunException = e.InnerException ?? e;
                         }
                     };
