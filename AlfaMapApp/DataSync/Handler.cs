@@ -241,7 +241,7 @@ namespace AlfaMap.DataSync {
             }
 
             foreach (ModelNode modelNode in Tree.Nodes.Values) {
-                if (modelNode.Id.IntegerValue == 3187854) {
+                if (modelNode.Id.IntegerValue == 1349238) {
                     Console.WriteLine("!");
                 }
                 if (modelNode.Type == ModelNodeType.Level || modelNode.Type == ModelNodeType.Building) {

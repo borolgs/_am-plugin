@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace AlfaMap.Batch {
     public class BatchConvertViewModel : RevitViewModelBase {
-
+        private BatchClient client = new BatchClient();
         private ObservableCollection<ConvertFileResult> batchConvertResults;
         public ObservableCollection<ConvertFileResult> BatchConvertResults {
             get { return batchConvertResults; }
@@ -20,6 +20,18 @@ namespace AlfaMap.Batch {
                 OnPropertyChanged();
             }
         }
+
+        private ObservableCollection<CoworkingRoomEntity> coworkings;
+        public ObservableCollection<CoworkingRoomEntity> Coworkings
+        {
+            get { return coworkings; }
+            set
+            {
+                coworkings = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public override void Run(object cmd, UIApplication uiapp) {
             var converter = new BatchConverter(uiapp);
@@ -74,6 +86,13 @@ namespace AlfaMap.Batch {
                         Console.WriteLine(e.ToString());
                     }
                     
+                });
+            } else if (command == "ReloadCoworkingList") {
+                Task.Run(async () => {
+                    var rooms = await client.FindCoworkingRooms();
+                    Coworkings = new ObservableCollection<CoworkingRoomEntity>(
+                        rooms.Select(room => new CoworkingRoomEntity { Id = room.Id, Address = room.Address })
+                    );
                 });
             }
         }

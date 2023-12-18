@@ -53,19 +53,19 @@
     </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.8.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.Edm.5.8.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Data.OData, Version=5.8.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Data.OData.5.8.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.OData.Core, Version=7.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.OData.Core.7.7.1\lib\net45\Microsoft.OData.Core.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.OData.Edm, Version=7.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.OData.Edm.7.7.1\lib\net45\Microsoft.OData.Edm.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Spatial, Version=7.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Spatial.7.7.1\lib\net45\Microsoft.Spatial.dll</HintPath>
@@ -76,8 +76,8 @@
       <Private>False</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -92,19 +92,19 @@
     </Reference>
     <Reference Include="Simple.OData.Client.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simple.OData.Client.5.14.0\lib\net461\Simple.OData.Client.Core.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Simple.OData.Client.Dynamic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simple.OData.Client.5.14.0\lib\net461\Simple.OData.Client.Dynamic.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Simple.OData.Client.V3.Adapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simple.OData.Client.5.14.0\lib\net461\Simple.OData.Client.V3.Adapter.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Simple.OData.Client.V4.Adapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Simple.OData.Client.5.14.0\lib\net461\Simple.OData.Client.V4.Adapter.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -288,6 +288,7 @@
     </Compile>
     <Compile Include="Batch\BatchConvertViewModel.cs" />
     <Compile Include="Batch\BatchConvertModel.cs" />
+    <Compile Include="Batch\BatchClient.cs" />
     <Compile Include="Common\Result.cs" />
     <Compile Include="Common\ImageUtils.cs" />
     <Compile Include="Common\Matrix.cs" />
@@ -307,6 +308,7 @@
     <Compile Include="DataSync\UpdateNodeResult.cs" />
     <Compile Include="Shared\RevitViewModelBase.cs" />
     <Compile Include="Shared\UseExcel.cs" />
+    <Compile Include="Snapshots\CreateSnapshothandler.cs" />
     <Compile Include="State\BuildingTree.cs" />
     <Compile Include="DataSync\Client.cs" />
     <Compile Include="DataSync\APITypes.cs" />
@@ -361,6 +363,12 @@
     <None Include="Workplace.addin" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Batch\BatchClient.resx">
+      <DependentUpon>BatchClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Batch\BatchClient.ru.resx">
+      <DependentUpon>BatchClient.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Coworking\CoworkingClient.resx">
       <DependentUpon>CoworkingClient.cs</DependentUpon>
     </EmbeddedResource>

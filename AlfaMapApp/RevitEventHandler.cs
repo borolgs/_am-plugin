@@ -10,25 +10,26 @@ namespace AlfaMap
     public sealed partial class RevitEventHandler : IExternalEventHandler
     {
         public delegate void Runner(UIApplication uiapp);
-        public delegate void OnOutputUpdate(string uiapp);
+        //public delegate void OnOutputUpdate(string uiapp);
 
         public Runner Method { get; set; }
-        public OnOutputUpdate Output { get; set; }
+        //public OnOutputUpdate Output { get; set; }
 
         public void Execute(UIApplication app)
         {
-            string commandConsoleOutString;
-            TextWriter originalConsoleOut = Console.Out;
-            using (var writer = new StringWriter()) {
-                Console.SetOut(writer);
+            Method?.Invoke(app);
+            //string commandConsoleOutString;
+            //TextWriter originalConsoleOut = Console.Out;
+            //using (var writer = new StringWriter()) {
+            //    Console.SetOut(writer);
 
-                Method?.Invoke(app);
+            //    Method?.Invoke(app);
 
-                writer.Flush();
-                commandConsoleOutString = writer.GetStringBuilder().ToString();
-            }
-            Output?.Invoke(commandConsoleOutString);
-            Console.SetOut(originalConsoleOut);
+            //    writer.Flush();
+            //    commandConsoleOutString = writer.GetStringBuilder().ToString();
+            //}
+            //Output?.Invoke(commandConsoleOutString);
+            //Console.SetOut(originalConsoleOut);
         }
 
         public string GetName()

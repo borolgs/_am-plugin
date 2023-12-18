@@ -28,9 +28,9 @@ namespace AlfaMap.Shared {
         public RelayCommand RunCommand {
             get {
                 return runCommand ?? (runCommand = new RelayCommand(command => {
-                    ExternalHandler.Output = output => {
-                        ConsoleOutput = output;
-                    };
+                    //ExternalHandler.Output = output => {
+                    //    ConsoleOutput = output;
+                    //};
                     ExternalHandler.Method = uiapp => {
                         ConsoleOutput = "";
                         Run(command, uiapp);

@@ -24,7 +24,23 @@ namespace AlfaMap.Batch {
             viewModel = vm;
             this.DataContext = viewModel;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            Topmost = true;
+            //Topmost = true;
+        }
+
+        private void SelectAllCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            foreach (var room in viewModel.Coworkings)
+            {
+                room.Selected = true;
+            }
+        }
+
+        private void SelectAllCheckbox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            foreach (var room in viewModel.Coworkings)
+            {
+                room.Selected = false;
+            }
         }
     }
 }
