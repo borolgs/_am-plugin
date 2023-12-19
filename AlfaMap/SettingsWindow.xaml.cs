@@ -1,4 +1,5 @@
 ﻿using AlfaMap.Common;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,6 +27,20 @@ namespace AlfaMap
             this.viewModel = viewModel;
             this.DataContext = this.viewModel;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        }
+
+        private void SelectPathButton_Click(object sender, RoutedEventArgs e) {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "Libraries (*.dll)|*.*";
+
+            if(dialog.ShowDialog() == true) {
+                viewModel.ConfigAppPath = dialog.FileName;
+            }
+        }
+
+        private void LoadAppButton_Click(object sender, RoutedEventArgs e) {
+            viewModel.RunReloadAppCommand.Execute(null);
+            Close();
         }
     }
 }

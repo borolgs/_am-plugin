@@ -176,54 +176,6 @@
 
 
                     </StackPanel>
-                    <!--
-                    <TreeView
-                        Height="500"
-                        x:Name="buildingTree"
-                        Grid.Row="2" BorderBrush="{x:Null}"
-                        HorizontalContentAlignment="Stretch"
-                        ItemsSource="{Binding DisplayTree.Nodes}"
-                        SelectedItemChanged="BuildingTree_SelectedItemChanged"
-                        >
-                        <TreeView.ItemContainerStyle>
-                            <Style TargetType="TreeViewItem">
-                                <EventSetter Event="MouseDoubleClick" Handler="TreeViewItem_MouseDoubleClick" />
-                                <EventSetter Event="MouseRightButtonDown" Handler="TreeViewItem_MouseDoubleClick" />
-                                
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Node.Type}" Value="{x:Static local:ModelNodeType.Building}">
-                                        <Setter Property="IsExpanded" Value="True"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TreeView.ItemContainerStyle>
-                        <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding Path=Children, Mode=TwoWay}">
-                                <DockPanel>
-                                    <Grid Margin="0,0,5,2">
-                                        
-                                        <Ellipse Height="6" Width="6" VerticalAlignment="Center">
-                                            <Ellipse.Style>
-                                                <Style TargetType="Ellipse">
-                                                    <Setter Property="Fill" Value="LightSeaGreen"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Connected}" Value="False">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Ellipse.Style>
-                                        </Ellipse>
-                                    </Grid>
-                                    <TextBlock Text="{Binding Name}" MinWidth="150"/>
-                                    <Button Style="{StaticResource TagStyle}" Content="{Binding Node.DroId}" Background="{Binding Color}" Padding="2,0,2,0" Margin="2" MinWidth="30"/>
-                                    
-                                </DockPanel>
-                            </HierarchicalDataTemplate>
-                        </TreeView.ItemTemplate>
-                    </TreeView>
-                    -->
-
                 </StackPanel>
             </TabItem>
             <!--WORKPALCE TAB-->

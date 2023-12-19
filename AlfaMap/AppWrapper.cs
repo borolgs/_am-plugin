@@ -9,13 +9,15 @@ namespace AlfaMap {
         private readonly object vmInstance = null;
         private readonly PropertyInfo docProperty = null;
         public UIElement UI { get; private set; } = null;
-        public AppWrapper(string dllPath) {
+        public AppWrapper(string dllPath, bool test) {
             byte[] bytes = File.ReadAllBytes(dllPath);
             Assembly assembly = Assembly.Load(bytes);
             Type vmType = assembly.GetType("AlfaMap.MainViewModel");
             Type uiType = assembly.GetType("AlfaMap.UI");
             vmInstance = Activator.CreateInstance(vmType);
             docProperty = vmType.GetProperty("Doc");
+
+            vmType.GetProperty("Test")?.SetValue(vmInstance, test, null);
 
             object uiInstance = Activator.CreateInstance(uiType, new object[] { vmInstance });
             UI = uiInstance as UIElement;

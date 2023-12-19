@@ -5,6 +5,7 @@
     <SolidColorBrush x:Key="border" Color="#FFBBBBBB"/>
     <SolidColorBrush x:Key="primaryBg" Color="#FFBBBBBB"/>
     <SolidColorBrush x:Key="secondaryBg" Color="#FFBBBBBB"/>
+    <SolidColorBrush x:Key="error" Color="#FFD61818"/>
     
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     
@@ -19,6 +20,10 @@
         <Setter Property="BorderBrush" Value="{StaticResource border}"/>
     </Style>
     <Style TargetType="TextBlock">
+        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Padding" Value="4,0,4,0"/>
+    </Style>
+    <Style TargetType="CheckBox">
         <Setter Property="Margin" Value="2"/>
         <Setter Property="Padding" Value="4,0,4,0"/>
     </Style>

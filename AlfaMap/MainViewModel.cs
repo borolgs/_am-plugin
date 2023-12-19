@@ -35,13 +35,51 @@ namespace AlfaMap {
             }
         }
 
-        public bool Debug {
+        public bool Test {
             get { return Config.Debug; }
             set {
                 Config.Debug = value;
                 OnPropertyChanged();
             }
         }
+
+        public string ConfigAppPath {
+            get { return Config.AppPath; }
+            set {
+                Config.AppPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string appPath;
+        public string AppPath {
+            get { return appPath; }
+            set {
+                appPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string error;
+        public string Error {
+            get { return error; }
+            set {
+                error = value;
+                OnPropertyChanged("HasError");
+                OnPropertyChanged();
+            }
+        }
+
+        private string errorMsg;
+        public string ErrorMsg {
+            get { return errorMsg; }
+            set {
+                errorMsg = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool HasError => !string.IsNullOrEmpty(Error);
 
         public MainViewModel()
         {
@@ -51,32 +89,39 @@ namespace AlfaMap {
             ReloadApp();
         }
 
-        private void ReloadApp() {
+        public bool ReloadApp() {
+            Error = null;
+            ErrorMsg = null;
             try {
                 string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string devAppPath = @"C:\Users\borodatov.os\source\repos\alfalife-revit-plugin\AlfaMapApp\bin\Debug\AlfaMapApp.dll";
-                string appPath;
-                if (Debug && File.Exists(devAppPath)) {
-                    appPath = devAppPath;
+                
+                if (!string.IsNullOrEmpty(ConfigAppPath) && File.Exists(ConfigAppPath)) {
+                    AppPath = ConfigAppPath;
                 } else {
-                    appPath = Path.Combine(dir, "AlfaMapApp.dll");
+                    AppPath = Path.Combine(dir, "AlfaMapApp.dll");
                 }
 
-                if (!File.Exists(appPath)) {
+                if (!File.Exists(AppPath)) {
                     var dialog = new TaskDialog("Init App Error");
                     dialog.MainInstruction = "AlfaMapApp.dll doesn't exists";
-                    dialog.MainContent = $"Invalid file path: {appPath}";
+                    dialog.MainContent = $"Invalid file path: {AppPath}";
                     dialog.Show();
-                    return;
+                    Error = "Файл не найден!";
+                    ErrorMsg = "Файл по указанному пути не найден";
+                    return HasError;
                 }
 
-                app = new AppWrapper(appPath);
+                app = new AppWrapper(appPath, Test);
                 app.UpdateDoc(Doc);
                 AppUI = app.UI;
             } catch (Exception e) {
                 Console.WriteLine(e);
-                TaskDialog.Show("Init App Error", e.ToString());
+                Error = "Не удалось загрузить приложение!";
+                ErrorMsg = e.ToString();
+                //TaskDialog.Show("Init App Error", e.ToString());
             }
+
+            return HasError;
             
         }
 

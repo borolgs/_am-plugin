@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:AlfaMap"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
-        Title="Settings" Height="150" Width="300">
+        Title="Settings" Height="150" Width="500">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -15,9 +15,15 @@
     </Window.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <CheckBox Content="Debug" IsChecked="{Binding Debug, Mode=TwoWay}" />
+        <StackPanel Grid.Row="0">
+            <Button HorizontalContentAlignment="Left" Content="{Binding ConfigAppPath}" Height="20" Click="SelectPathButton_Click"  />
+            <CheckBox Content="Test" IsChecked="{Binding Test, Mode=TwoWay}" />
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Height="30" x:Name="LoadAppButton" Click="LoadAppButton_Click">Загрузить</Button>
+        </StackPanel>
     </Grid>
 </Window>

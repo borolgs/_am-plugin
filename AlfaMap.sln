@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32630.192
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlfaMap", "AlfaMap\AlfaMap.csproj", "{25562216-B163-4F8B-B44B-3E115CE8D7FC}"
 EndProject
@@ -24,9 +24,10 @@ Global
 		{25562216-B163-4F8B-B44B-3E115CE8D7FC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.DebugApp|Any CPU.ActiveCfg = DebugApp|Any CPU
-		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.DebugApp|Any CPU.Build.0 = DebugApp|Any CPU
-		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.DebugHost|Any CPU.ActiveCfg = DebugHost|Any CPU
+		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.DebugApp|Any CPU.ActiveCfg = Debug|Any CPU
+		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.DebugApp|Any CPU.Build.0 = Debug|Any CPU
+		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.DebugHost|Any CPU.ActiveCfg = Debug|Any CPU
+		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.DebugHost|Any CPU.Build.0 = Debug|Any CPU
 		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33EFDE6D-F2AD-417B-865B-1F80735384AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

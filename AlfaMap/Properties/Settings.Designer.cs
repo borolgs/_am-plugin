@@ -34,5 +34,17 @@ namespace AlfaMap.Properties {
                 this["Debug"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("T:\\IT\\Офисная недвижимость\\alfamap\\AlfaMapApp.dll")]
+        public string AppPath {
+            get {
+                return ((string)(this["AppPath"]));
+            }
+            set {
+                this["AppPath"] = value;
+            }
+        }
     }
 }

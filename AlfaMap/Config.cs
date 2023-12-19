@@ -15,5 +15,15 @@ namespace AlfaMap {
                 Properties.Settings.Default.Save();
             }
         }
+
+        public static string AppPath {
+            get {
+                return Properties.Settings.Default.AppPath;
+            }
+            set {
+                Properties.Settings.Default.AppPath = value;
+                Properties.Settings.Default.Save();
+            }
+        }
     }
 }

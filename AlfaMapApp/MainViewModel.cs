@@ -236,6 +236,15 @@ namespace AlfaMap
         #endregion
 
         #region Main Properties
+        private bool test = false;
+        public bool Test {
+            get { return test; }
+            set {
+                Test = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string consoleOutput;
         public string ConsoleOutput {
             get { return consoleOutput; }

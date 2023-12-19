@@ -18,18 +18,37 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="2,2,2,0">
-            <!--<ToggleButton IsChecked="False" Content="Sync" ToolTip="Включить автоматическую синхронихацию" />-->
-            <Button Command="{Binding RunReloadAppCommand}" Style="{StaticResource IconButtonStyle}" ToolTip="Reload">
-                <Image x:Name="ReloadAppIcon" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
-            </Button>
-            <Button x:Name="SettingsButton" Style="{StaticResource IconButtonStyle}" ToolTip="Settings" Click="SettingsButton_Click">
-                <Image x:Name="SettingsIcon" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
-            </Button>
-        </StackPanel>
+        <DockPanel Grid.Row="0" Margin="2,2,2,0">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top">
+                <Button Command="{Binding RunReloadAppCommand}" Style="{StaticResource IconButtonStyle}" ToolTip="Reload">
+                    <Image x:Name="ReloadAppIcon" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
+                </Button>
+                <Button  x:Name="SettingsButton" Style="{StaticResource IconButtonStyle}" ToolTip="Settings" Click="SettingsButton_Click">
+                    <Image x:Name="SettingsIcon" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
+                </Button>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="{Binding AppPath}" ToolTip="{Binding AppPath}" />
+                <TextBlock Text="{Binding Error}" ToolTip="{Binding ErrorMsg}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{StaticResource error}"/>
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasError}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <StackPanel>
+                   
+                </StackPanel>
+            </StackPanel>
+        </DockPanel>
         
         <ContentPresenter Grid.Row="1" Margin="0,5,0,0" Name="AppUI" HorizontalAlignment="Stretch" Content="{Binding AppUI}"></ContentPresenter>
-        <!--<ScrollViewer Grid.Row="1" Margin="0,5,0,0" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
-        </ScrollViewer>-->
+        
     </Grid>
 </Page>
