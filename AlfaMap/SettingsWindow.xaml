@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:local="clr-namespace:AlfaMap"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
-        Title="Settings" Height="150" Width="500">
+        Title="Settings" Height="200" Width="600">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

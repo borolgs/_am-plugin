@@ -10,8 +10,15 @@ namespace AlfaMap {
         private readonly PropertyInfo docProperty = null;
         public UIElement UI { get; private set; } = null;
         public AppWrapper(string dllPath, bool test) {
+            var pdbPath = dllPath.Replace(".dll", ".pdb");
             byte[] bytes = File.ReadAllBytes(dllPath);
-            Assembly assembly = Assembly.Load(bytes);
+            Assembly assembly;
+            if (File.Exists(pdbPath)) {
+                byte[] pdbbytes = File.ReadAllBytes(pdbPath);
+                assembly = Assembly.Load(bytes, pdbbytes);
+            } else {
+                assembly = Assembly.Load(bytes);
+            }
             Type vmType = assembly.GetType("AlfaMap.MainViewModel");
             Type uiType = assembly.GetType("AlfaMap.UI");
             vmInstance = Activator.CreateInstance(vmType);
