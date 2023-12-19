@@ -25,7 +25,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <!--HEADER-->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,2,2,0">
+        <DockPanel Grid.Row="0"  HorizontalAlignment="Stretch" Margin="2,2,2,0">
             <!--<ToggleButton IsChecked="False" Content="Sync" ToolTip="Включить автоматическую синхронихацию" />-->
             <Button Command="{Binding RunWorkplaceCommand}"
                     CommandParameter="{x:Static local:WorkplaceCommand.PrepareModel}"
@@ -58,9 +58,23 @@
             <Grid>
                 <TextBlock Text="{Binding StatusMessage}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
             </Grid>
+            <Grid DockPanel.Dock="Right" HorizontalAlignment="Right">
+                <TextBlock Text="TEST" ToolTip="Запросы идут в тестовый контур!" HorizontalAlignment="Stretch" FontWeight="Bold" Foreground="Gray" VerticalAlignment="Center" Padding="0,0,5,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Test}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
             <!--</StackPanel>-->
 
-        </StackPanel>
+        </DockPanel>
         <TabControl Grid.Row="1">
             <!--WORKPALCE TREE TAB-->
             <TabItem Header="SyncResult">

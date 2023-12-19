@@ -36,32 +36,26 @@ using Autodesk.Revit.DB.Architecture;
 
 namespace AlfaMap
 {
-    public class MainViewModel : ViewModelBase
-    {
+    public class MainViewModel : ViewModelBase {
         #region Revit Properties
         private ExternalEvent externalEvent;
         private RevitEventHandler externalHandler;
 
 
         private RelayCommand runWorkplaceCommand;
-        public RelayCommand RunWorkplaceCommand
-        {
-            get
-            {
-                return runWorkplaceCommand ?? (runWorkplaceCommand = new RelayCommand(obj =>
-                {
+        public RelayCommand RunWorkplaceCommand {
+            get {
+                return runWorkplaceCommand ?? (runWorkplaceCommand = new RelayCommand(obj => {
                     var command = (WorkplaceCommand)obj;
 
-                    if (command == WorkplaceCommand.LoadOfficeData)
-                    {
+                    if (command == WorkplaceCommand.LoadOfficeData) {
                         _ = SyncV2();
                         return;
                     } else if (command == WorkplaceCommand.CreateOrOverrideActiveVersion) {
-                        _ = UploadV2();     
+                        _ = UploadV2();
                     }
 
-                    externalHandler.Method = uiapp =>
-                    {
+                    externalHandler.Method = uiapp => {
                         RunRevit(uiapp, command);
                     };
                     externalEvent.Raise();
@@ -75,7 +69,7 @@ namespace AlfaMap
                 return runScratchCommand ?? (runScratchCommand = new RelayCommand(obj => {
                     var command = (string)obj;
 
-                    
+
 
                     //if (command == "BatchConvert") {
                     //    if (batchConvertDialog == null) {
@@ -155,17 +149,15 @@ namespace AlfaMap
 
                     externalHandler.Method = uiapp => {
                         try {
-                            if (command == "GetModelSnapshot")
-                            {
+                            if (command == "GetModelSnapshot") {
                                 var handler = new CreateSnapshothandler(uiapp);
                                 handler.Run();
                             }
 
-                            if (command == "ConvertToSVG"){
+                            if (command == "ConvertToSVG") {
                                 var dialog = new TaskDialog("Экспорт помещений в SVG");
                                 var selectedElements = uiapp.ActiveUIDocument.Selection.GetElementIds().Select(doc.GetElement).ToList();
-                                if (selectedElements.Count == 0)
-                                {
+                                if (selectedElements.Count == 0) {
                                     dialog.MainInstruction = "Ничего не выбрано";
                                     dialog.MainContent = "Выберите помещение-коворкинг и повторите команду";
                                     dialog.Show();
@@ -175,12 +167,10 @@ namespace AlfaMap
                                 handler.InitFromDocument(doc);
                                 var converter = new SVGConverter();
 
-                                if (selectedElements.Count == 1)
-                                {
+                                if (selectedElements.Count == 1) {
                                     var selectedNode = handler.GetNode(selectedElements[0].UniqueId);
                                     bool validNode = selectedNode?.Node?.type.id == 4 && selectedNode.Children.Where(workplaceNode => workplaceNode.Node?.type?.id == 5).Count() > 0;
-                                    if (!validNode)
-                                    {
+                                    if (!validNode) {
                                         dialog.MainInstruction = "Выбранный элемент не помещение-коворкинг";
                                         dialog.MainContent = "Выберите помещение-коворкинг и повторите команду";
                                         dialog.Show();
@@ -212,10 +202,9 @@ namespace AlfaMap
                                     dialog.MainContent = $"{svgPath}\nПроверить можно здесь <a href=\"https://www.svgviewer.dev/\">svgviewer.dev</a>.\nSVG уже скопирован в буфер обмена.";
                                     dialog.Show();
                                 }
-                                
+
                             }
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                             RunException = e.InnerException ?? e;
                         }
                     };
@@ -225,11 +214,9 @@ namespace AlfaMap
         }
 
         private Document doc;
-        public Document Doc
-        {
+        public Document Doc {
             get { return doc; }
-            set
-            {
+            set {
                 OnDocumentSwitch(value);
             }
         }
@@ -240,7 +227,8 @@ namespace AlfaMap
         public bool Test {
             get { return test; }
             set {
-                Test = value;
+                test = value;
+                InitDataHandler(test);
                 OnPropertyChanged();
             }
         }
@@ -254,10 +242,8 @@ namespace AlfaMap
             }
         }
 
-        private BuildingTree FreshTree
-        {
-            get
-            {
+        private BuildingTree FreshTree {
+            get {
                 if (Doc == null)
                     return null;
 
@@ -267,44 +253,36 @@ namespace AlfaMap
         }
 
         private string docName;
-        public string DocName
-        {
+        public string DocName {
             get { return docName; }
-            set
-            {
+            set {
                 docName = value;
                 OnPropertyChanged();
             }
         }
 
         private bool canBeLinked = false;
-        public bool CanBeLinked
-        {
+        public bool CanBeLinked {
             get { return canBeLinked; }
-            set
-            {
+            set {
                 canBeLinked = value;
                 OnPropertyChanged();
             }
         }
 
         private bool canSync = false;
-        public bool CanSync
-        {
+        public bool CanSync {
             get { return canSync; }
-            set
-            {
+            set {
                 canSync = value;
                 OnPropertyChanged();
             }
         }
 
         private bool isUIEnabled = false;
-        public bool IsUIEnabled
-        {
+        public bool IsUIEnabled {
             get { return isUIEnabled; }
-            set
-            {
+            set {
                 isUIEnabled = value;
                 OnPropertyChanged();
             }
@@ -312,8 +290,8 @@ namespace AlfaMap
 
         private string updateModelConsoleOutput;
         public string UpdateModelConsoleOutput {
-            get { 
-                return updateModelConsoleOutput; 
+            get {
+                return updateModelConsoleOutput;
             }
             set {
                 updateModelConsoleOutput = value;
@@ -326,11 +304,9 @@ namespace AlfaMap
 
 
         private string directory = "C:\\Users\\U_M12EE\\Desktop\\";
-        public string Directory
-        {
+        public string Directory {
             get { return directory; }
-            set
-            {
+            set {
                 directory = value;
                 OnPropertyChanged();
             }
@@ -339,40 +315,33 @@ namespace AlfaMap
         private string buildingVersionUuid = "0E5CC281-A457-41AB-B8C6-11883908AD55";
         public string BuildingVersionUuid {
             get { return buildingVersionUuid; }
-            set
-            {
+            set {
                 buildingVersionUuid = value;
                 OnPropertyChanged();
             }
         }
 
         private string modelUuid = "67731DAD-E5D1-4303-8219-708DEC568A7A";
-        public string ModelUuid
-        {
+        public string ModelUuid {
             get { return modelUuid; }
-            set
-            {
+            set {
                 modelUuid = value;
                 OnPropertyChanged();
             }
         }
 
         private Status status;
-        public Status Status
-        {
+        public Status Status {
             get { return status; }
-            set
-            {
+            set {
                 status = value;
                 OnPropertyChanged();
                 OnPropertyChanged("StatusMessage");
             }
         }
-        public string StatusMessage
-        {
+        public string StatusMessage {
             get {
-                switch (Status)
-                {
+                switch (Status) {
                     case Status.CreateTree:
                         return "";
                     case Status.ConnectingBuilding:
@@ -392,33 +361,27 @@ namespace AlfaMap
         }
 
         private string office;
-        public string Office
-        {
+        public string Office {
             get { return office; }
-            set
-            {
+            set {
                 office = value;
                 OnPropertyChanged();
             }
         }
 
         private string description;
-        public string Description
-        {
+        public string Description {
             get { return description; }
-            set
-            {
+            set {
                 description = value;
                 OnPropertyChanged();
             }
         }
 
         private Exception runException;
-        public Exception RunException
-        {
+        public Exception RunException {
             get { return runException; }
-            set
-            {
+            set {
                 runException = value;
                 OnPropertyChanged();
                 if (runException != null)
@@ -429,22 +392,18 @@ namespace AlfaMap
         public string ExceptionMessage => RunException.ToString();
 
         private LinkFormViewModel linkForm = new LinkFormViewModel();
-        public LinkFormViewModel LinkForm
-        {
+        public LinkFormViewModel LinkForm {
             get { return linkForm; }
-            set
-            {
+            set {
                 linkForm = value;
                 OnPropertyChanged();
             }
         }
 
         private DisplayBuildingTree displayTree;
-        public DisplayBuildingTree DisplayTree
-        {
+        public DisplayBuildingTree DisplayTree {
             get { return displayTree; }
-            set
-            {
+            set {
                 displayTree = value;
                 OnPropertyChanged();
             }
@@ -452,7 +411,6 @@ namespace AlfaMap
         #endregion
 
         private DataSync.Handler handler;
-
 
         private ObservableCollection<SyncNodeInfo> syncResults;
         public ObservableCollection<SyncNodeInfo> SyncResults {
@@ -472,8 +430,20 @@ namespace AlfaMap
             externalHandler = new RevitEventHandler();
             externalEvent = ExternalEvent.Create(externalHandler);
             DisplayTree = new DisplayBuildingTree();
+        }
 
-            var client = new DataSync.Client(new System.Net.Http.HttpClient());
+        private void InitDataHandler(bool test = false) {
+            var baseUrl = test
+             ? "https://aptest.moscow.alfaintra.net/amap/api/v1"
+             : "https://ap.moscow.alfaintra.net/amap/api/v1";
+
+            var httpHandler = new HttpClientHandler {
+                UseDefaultCredentials = true,
+
+            };
+            httpHandler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            httpHandler.ServerCertificateCustomValidationCallback = (msg, cert, certChain, policyErrors) => true;
+            var client = new DataSync.Client(new HttpClient(httpHandler), baseUrl);
             handler = new DataSync.Handler(client);
         }
 

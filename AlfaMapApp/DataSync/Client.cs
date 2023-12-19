@@ -11,10 +11,10 @@ using AlfaMap.Common;
 namespace AlfaMap.DataSync {
     public class Client {
         private readonly HttpClient httpClient;
-        private readonly string urlBase = "http://localhost:3030/api/v1";
-        //private readonly string urlBase = "http://locvis-dev/beta/api/v1";
+        private readonly string urlBase;
 
-        public Client(HttpClient httpClient) {
+        public Client(HttpClient httpClient, string baseUrl) {
+            this.urlBase = baseUrl;
             this.httpClient = httpClient;
         }
 
