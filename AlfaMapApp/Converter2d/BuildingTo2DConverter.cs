@@ -37,7 +37,7 @@ namespace AlfaMap.Converter2d
                 .FirstOrDefault();
 
             if (buildingMass == null) {
-                throw new Exception("No building mass!");
+                throw new Exception("Для здания должна быть сделана формообразующая с комментарием МAIN");
             }
 
             var buildingBbox = buildingMass.get_BoundingBox(null);

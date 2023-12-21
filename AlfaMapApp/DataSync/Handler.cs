@@ -12,6 +12,8 @@ using Newtonsoft.Json.Converters;
 using AlfaMap.State;
 using AlfaMap.Shared;
 using AlfaMap.Converter;
+using AlfaMap.Converter2d;
+using Newtonsoft.Json.Serialization;
 
 namespace AlfaMap.DataSync {
     public class Handler {
@@ -376,7 +378,10 @@ namespace AlfaMap.DataSync {
                     new BuildingModelUpdate {
                         description = $"Test Update {DateTime.Now.ToLocalTime()}",
                         elements = elements.Value,
-                        geometry = geometry.Value
+                        geometry = new BuildingModelGeometry {
+                            d2 = geometry.Value.Item2,
+                            d3 = geometry.Value.Item1,
+                        }
                     }
                 );
 
@@ -389,21 +394,40 @@ namespace AlfaMap.DataSync {
                     description = $"Test Create {DateTime.Now.ToLocalTime()}",
                     asCurrent = true,
                     elements = elements.Value,
-                    geometry = geometry.Value
+                    geometry = new BuildingModelGeometry {
+                        d2 = geometry.Value.Item2,
+                        d3 = geometry.Value.Item1,
+                    }
                 }
             );
             return newModel;
         }
 
-        private async Task<Result<string, DataSyncException>> CreateGeometryData() {
+        private async Task<Result<(string,string), DataSyncException>> CreateGeometryData() {
             try {
                 var converter = new THREEConverter(doc, Tree);
                 converter.Convert();
-                var jopa = JsonConvert.SerializeObject(converter.Root, new StringEnumConverter());
-                var modelString = await StringUtils.ConvertoToZipBase64(jopa);
-                return new OkResult<string, DataSyncException>(modelString);
+                var data3dString = JsonConvert.SerializeObject(converter.Root, new StringEnumConverter());
+                var encodedData3dString = await StringUtils.ConvertoToZipBase64(data3dString);
+
+                //var converter2d = new BuildingTo2DConverter();
+                //var data2d = converter2d.Convert(Tree.Root);
+                //var jsonSettings = new JsonSerializerSettings { 
+                //    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                //    Converters = new JsonConverter[] {
+                //        new BBoxConverter(),
+                //        new XYZConverter(),
+                //        new BoundariesConverter(),
+                //        new CurveConverter(),
+                //    },
+                //    NullValueHandling = NullValueHandling.Ignore,
+                //};
+                //var data2dString = JsonConvert.SerializeObject(data2d, jsonSettings);
+                //var encodedData2dString = await StringUtils.ConvertoToZipBase64(data2dString);
+
+                return new OkResult<(string, string), DataSyncException>((encodedData3dString, null));
             } catch (Exception e) {
-                return new ErrResult<string, DataSyncException>(new DataSyncException("Convert geometry error", e));
+                return new ErrResult<(string,string), DataSyncException>(new DataSyncException("Convert geometry error", e));
             }
         }
 

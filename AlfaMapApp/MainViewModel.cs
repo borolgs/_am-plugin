@@ -21,7 +21,6 @@ using AlfaMap.Connector;
 using Newtonsoft.Json;
 using AlfaMap.Common;
 using Newtonsoft.Json.Converters;
-using Simple.OData.Client;
 using System.Net;
 using System.Globalization;
 using AlfaMap.Revit;
@@ -434,7 +433,8 @@ namespace AlfaMap
 
         private void InitDataHandler(bool test = false) {
             var baseUrl = test
-             ? "https://aptest.moscow.alfaintra.net/amap/api/v1"
+             //? "https://aptest.moscow.alfaintra.net/amap/api/v1"
+             ? "http://localhost:3030/api/v1"
              : "https://ap.moscow.alfaintra.net/amap/api/v1";
 
             var httpHandler = new HttpClientHandler {
@@ -648,7 +648,8 @@ namespace AlfaMap
 
                             var dialog = new TaskDialog("Sync");
                             dialog.MainInstruction = "Модель загружена на сервер";
-                            string url = $"http://locvis-dev/buildings/{model.buildingId}?officeId={handler.Building.place.offices[0].id}";
+                            string testPrefix = Test ? "test" : "";
+                            string url = $"https://ap{testPrefix}.moscow.alfaintra.net/amap/pro/buildings/{model.buildingId}?officeId={handler.Building.place.offices[0].id}";
                             string link = $"<a href=\"{url}\">{url}</a>";
                             dialog.MainContent = link; // $"<a href=\"http://locvis=dev/buildings/{model.buildingId}?officeId={handler.Building.place.offices[0].id}\"></a>";
                             dialog.Show();

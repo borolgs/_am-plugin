@@ -54,14 +54,19 @@ namespace AlfaMap.DataSync {
         public string description { get; set; }
         public List<ModelElement> elements { get; set; }
         public bool asCurrent { get; set; }
-        public string geometry { get; set; }
+        public BuildingModelGeometry geometry { get; set; }
     }
 
     public class BuildingModelUpdate {
         public string description { get; set; }
         public List<ModelElement> elements { get; set; }
         public bool asCurrent { get; set; }
-        public string geometry { get; set; }
+        public BuildingModelGeometry geometry { get; set; }
+    }
+
+    public class BuildingModelGeometry {
+        public string d2 { get; set; }
+        public string d3 { get; set; }
     }
 
     public class NodeType {
