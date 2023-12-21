@@ -51,22 +51,6 @@
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.Data.Edm, Version=5.8.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.8.4\lib\net40\Microsoft.Data.Edm.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.OData, Version=5.8.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.OData.5.8.4\lib\net40\Microsoft.Data.OData.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.OData.Core, Version=7.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.OData.Core.7.7.1\lib\net45\Microsoft.OData.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.OData.Edm, Version=7.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.OData.Edm.7.7.1\lib\net45\Microsoft.OData.Edm.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.Spatial, Version=7.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Spatial.7.7.1\lib\net45\Microsoft.Spatial.dll</HintPath>
       <Private>False</Private>
@@ -89,22 +73,6 @@
     <Reference Include="RevitAPIUI">
       <HintPath>..\..\..\..\..\..\Program Files\Autodesk\Revit 2020\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="Simple.OData.Client.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simple.OData.Client.5.14.0\lib\net461\Simple.OData.Client.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Simple.OData.Client.Dynamic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simple.OData.Client.5.14.0\lib\net461\Simple.OData.Client.Dynamic.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Simple.OData.Client.V3.Adapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simple.OData.Client.5.14.0\lib\net461\Simple.OData.Client.V3.Adapter.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Simple.OData.Client.V4.Adapter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Simple.OData.Client.5.14.0\lib\net461\Simple.OData.Client.V4.Adapter.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -299,10 +267,6 @@
     <Compile Include="Converter2d\LevelTo2DConverter.cs" />
     <Compile Include="Converter2d\BuildingTo2DConverter.cs" />
     <Compile Include="Converter2d\UnitConverter.cs" />
-    <Compile Include="Coworking\CoworkingClient.cs" />
-    <Compile Include="Coworking\CoworkingHandler.cs" />
-    <Compile Include="Coworking\Parameters.cs" />
-    <Compile Include="Coworking\UploadRoomsViewModel.cs" />
     <Compile Include="Converter2d\RoomTo2DConverter.cs" />
     <Compile Include="Converter2d\SVGConverter.cs" />
     <Compile Include="DataSync\UpdateNodeResult.cs" />
@@ -325,9 +289,6 @@
     <Compile Include="Converter\THREERoot.cs" />
     <Compile Include="Converter\THREEUserData.cs" />
     <Compile Include="Revit\ParamChecker.cs" />
-    <Compile Include="UploadRooms.xaml.cs">
-      <DependentUpon>UploadRooms.xaml</DependentUpon>
-    </Compile>
     <Compile Include="LinkViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MVVM\RelayCommand.cs" />
@@ -369,12 +330,6 @@
     <EmbeddedResource Include="Batch\BatchClient.ru.resx">
       <DependentUpon>BatchClient.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Coworking\CoworkingClient.resx">
-      <DependentUpon>CoworkingClient.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Coworking\CoworkingClient.ru.resx">
-      <DependentUpon>CoworkingClient.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="MVVM\ViewModelBase.resx">
       <DependentUpon>ViewModelBase.cs</DependentUpon>
     </EmbeddedResource>
@@ -404,10 +359,6 @@
     <EmbeddedResource Include="Revit\ParamCreator.ru.resx">
       <DependentUpon>ParamCreator.cs</DependentUpon>
     </EmbeddedResource>
-    <Page Include="UploadRooms.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Style.xaml">
       <Generator>XamlIntelliSenseFileGeneratorc</Generator>
       <SubType>Designer</SubType>
