@@ -112,8 +112,11 @@ namespace AlfaMap.DataSync {
 
         public async Task<Result<Building, DataSyncException>> UpdateBuilding(int buildingId, BuildingUpdate data) {
             try {
-                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json-patch+json");
-                HttpResponseMessage response = await httpClient.PostAsync($"{urlBase}/buildings/{buildingId}", content);
+                var content = new StringContent(JsonConvert.SerializeObject(data, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), Encoding.UTF8, "application/json-patch+json");
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), $"{urlBase}/buildings/{buildingId}") {
+                    Content = content
+                };
+                HttpResponseMessage response = await httpClient.SendAsync(request);
                 string responseBody = await response.Content.ReadAsStringAsync();
 
                 if (response.StatusCode != HttpStatusCode.OK) {

@@ -336,16 +336,16 @@ namespace AlfaMap.DataSync {
             
         }
 
-        public async Task<Result<BuildingModel, DataSyncException>> UploadData() {
+        public async Task<Result<BuildingModel, DataSyncException>> UploadData(string description = null, bool asCurrent = true, bool keepPrev = false) {
             var buildingReady = await InitBuilding();
             if (buildingReady.Err) {
                 return new ErrResult<BuildingModel, DataSyncException>(buildingReady.Error);
             }
-            var model = await UpdateOrCreateBuildingModel();
+            var model = await UpdateOrCreateBuildingModel(description, asCurrent, keepPrev);
             return model;
         }
 
-        private async Task<Result<BuildingModel, DataSyncException>> UpdateOrCreateBuildingModel() {
+        private async Task<Result<BuildingModel, DataSyncException>> UpdateOrCreateBuildingModel(string description = null, bool asCurrent = true, bool keepPrev = false) {
             ErrResult<BuildingModel, DataSyncException> err(DataSyncException e) => new ErrResult<BuildingModel, DataSyncException>(e);
             ErrResult<BuildingModel, DataSyncException> appErr(string message) => new ErrResult<BuildingModel, DataSyncException>(new DataSyncException(message));
             OkResult<BuildingModel, DataSyncException> ok(BuildingModel m) => new OkResult<BuildingModel, DataSyncException>(m);
@@ -366,8 +366,12 @@ namespace AlfaMap.DataSync {
                 return err(geometry.Error);
             }
 
+            if (!string.IsNullOrEmpty(building.filepath) && building.filepath != doc.PathName) {
+                description += $"\nМодель загружена из нового места:\n{building.filepath} -> \n{doc.PathName}";
+            }
+
             bool hasCurrentModel = building.currentModelId.HasValue && building.currentModelId.Value > 0;
-            if (hasCurrentModel) {
+            if (hasCurrentModel && !keepPrev) {
                 var currentModel = await client.FindBuildingModelById(building.currentModelId.Value);
                 if (currentModel.Err) {
                     return err(currentModel.Error);
@@ -376,7 +380,7 @@ namespace AlfaMap.DataSync {
                 var updatedModel = await client.UpdateBuildingModel(
                     currentModel.Value.id,
                     new BuildingModelUpdate {
-                        description = $"Test Update {DateTime.Now.ToLocalTime()}",
+                        description = description,
                         elements = elements.Value,
                         geometry = new BuildingModelGeometry {
                             d2 = geometry.Value.Item2,
@@ -385,14 +389,21 @@ namespace AlfaMap.DataSync {
                     }
                 );
 
+                if (string.IsNullOrEmpty(building.filepath) || building.filepath != doc.PathName) {
+                    var updatedBuilding = await client.UpdateBuilding(buildingId, new BuildingUpdate { filepath = doc.PathName });
+                    if (updatedBuilding.Err) {
+                        return err(updatedBuilding.Error);
+                    }
+                }
+
                 return updatedModel;
             }
 
             var newModel = await client.CreateBuildingModel(
                 new BuildingModelCreate {
                     buildingId = buildingId,
-                    description = $"Test Create {DateTime.Now.ToLocalTime()}",
-                    asCurrent = true,
+                    description = description,
+                    asCurrent = asCurrent,
                     elements = elements.Value,
                     geometry = new BuildingModelGeometry {
                         d2 = geometry.Value.Item2,
@@ -400,6 +411,15 @@ namespace AlfaMap.DataSync {
                     }
                 }
             );
+
+            if (string.IsNullOrEmpty(building.filepath) || building.filepath != doc.PathName) {
+                var updatedBuilding = await client.UpdateBuilding(buildingId, new BuildingUpdate { filepath = doc.PathName });
+                if (updatedBuilding.Err) {
+                    return err(updatedBuilding.Error);
+                }
+            }
+
+
             return newModel;
         }
 
@@ -412,7 +432,7 @@ namespace AlfaMap.DataSync {
 
                 //var converter2d = new BuildingTo2DConverter();
                 //var data2d = converter2d.Convert(Tree.Root);
-                //var jsonSettings = new JsonSerializerSettings { 
+                //var jsonSettings = new JsonSerializerSettings {
                 //    ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 //    Converters = new JsonConverter[] {
                 //        new BBoxConverter(),

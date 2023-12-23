@@ -3,33 +3,18 @@ using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Markup;
-//using LanguageExt;
-//using static LanguageExt.Prelude;
 using AlfaMap.Connector;
-using Newtonsoft.Json;
-using AlfaMap.Common;
-using Newtonsoft.Json.Converters;
-using System.Net;
-using System.Globalization;
-using AlfaMap.Revit;
 using AlfaMap.DataSync;
 using AlfaMap.State;
 using AlfaMap.Converter2d;
-using Newtonsoft.Json.Serialization;
 using AlfaMap.Batch;
-using System.Security.Cryptography;
 using Workplace.Snapshots;
 using Autodesk.Revit.DB.Architecture;
 
@@ -369,10 +354,28 @@ namespace AlfaMap
         }
 
         private string description;
-        public string Description {
+        public string UploadModelDescription {
             get { return description; }
             set {
                 description = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool uploadModelAsCurrent = true;
+        public bool UploadModelAsCurrent {
+            get { return uploadModelAsCurrent; }
+            set {
+                uploadModelAsCurrent = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool keepPrevModel = false;
+        public bool KeepPrevModel {
+            get { return keepPrevModel; }
+            set {
+                keepPrevModel = value;
                 OnPropertyChanged();
             }
         }
@@ -635,7 +638,11 @@ namespace AlfaMap
         private async Task UploadV2() {
             try {
                 handler.InitFromDocument(Doc);
-                var model = (await handler.UploadData()).Unwrap();
+                var model = (await handler.UploadData(UploadModelDescription, UploadModelAsCurrent, KeepPrevModel)).Unwrap();
+
+                UploadModelDescription = null;
+                UploadModelAsCurrent = true;
+                KeepPrevModel = false;
 
                 externalHandler.Method = uiapp => {
                     using (Transaction t = new Transaction(Doc)) {

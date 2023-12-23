@@ -13,6 +13,8 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -60,9 +62,8 @@
       <Private>False</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -270,6 +271,9 @@
     <Compile Include="Converter2d\RoomTo2DConverter.cs" />
     <Compile Include="Converter2d\SVGConverter.cs" />
     <Compile Include="DataSync\UpdateNodeResult.cs" />
+    <Compile Include="UploadModelDialog.xaml.cs">
+      <DependentUpon>UploadModelDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shared\RevitViewModelBase.cs" />
     <Compile Include="Shared\UseExcel.cs" />
     <Compile Include="Snapshots\CreateSnapshothandler.cs" />
@@ -307,6 +311,10 @@
     <Compile Include="Revit\ParamCreator.cs" />
     <Compile Include="Revit\Utils.cs" />
     <Page Include="Batch\BatchConvertDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UploadModelDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

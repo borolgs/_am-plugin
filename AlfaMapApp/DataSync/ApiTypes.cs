@@ -23,6 +23,7 @@ namespace AlfaMap.DataSync {
         public int placeId { get; set; }
         public string name { get; set; }
         public string description { get; set; }
+        public string filepath { get; set; }
         public int? currentModelId { get; set; }
         public DateTime createdAt { get; set; }
         public DateTime updatedAt { get; set; }
@@ -33,11 +34,13 @@ namespace AlfaMap.DataSync {
         public int placeId { get; set; }
         public string name { get; set; }
         public string description { get; set; }
+        public string filepath { get; set; }
     }
 
     public class BuildingUpdate {
         public string name { get; set; }
         public string description { get; set; }
+        public string filepath { get; set; }
     }
 
     public class BuildingModel {

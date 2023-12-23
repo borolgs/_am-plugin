@@ -44,9 +44,10 @@
                     Style="{StaticResource IconButtonStyle}" ToolTip="Связать с БД. Пока нужно вручную вписать Id пощадки в параметр 'AB_PlaceId' информации о проекте">
                 <Image x:Name="ConnectImage" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
             </Button>
+            <!--Command="{Binding RunWorkplaceCommand}"
+                    CommandParameter="{x:Static local:WorkplaceCommand.CreateOrOverrideActiveVersion}"-->
             <Button Click="CreateVersionButton_Click"
-                    Command="{Binding RunWorkplaceCommand}"
-                    CommandParameter="{x:Static local:WorkplaceCommand.CreateOrOverrideActiveVersion}"
+                    
                     Style="{StaticResource IconButtonStyle}"
                     ToolTip="Отправить">
                 <Image x:Name="UploadNewVersion2" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>

@@ -72,6 +72,7 @@ namespace AlfaMap
 
         private void CreateVersionButton_Click(object sender, RoutedEventArgs e)
         {
+            new UploadModelDialog(this.ViewModel).Show();
             //DescriptionTextBox.Clear();
         }
 
