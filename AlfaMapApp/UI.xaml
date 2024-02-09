@@ -38,12 +38,12 @@
                 <Image x:Name="LoadImage" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
             </Button>
             <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">-->
-            <Button x:Name="ConnectButton"
+            <!--<Button x:Name="ConnectButton"
                     Click="ConnectButton_Click"
                     IsEnabled="False"
                     Style="{StaticResource IconButtonStyle}" ToolTip="Связать с БД. Пока нужно вручную вписать Id пощадки в параметр 'AB_PlaceId' информации о проекте">
                 <Image x:Name="ConnectImage" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
-            </Button>
+            </Button>-->
             <!--Command="{Binding RunWorkplaceCommand}"
                     CommandParameter="{x:Static local:WorkplaceCommand.CreateOrOverrideActiveVersion}"-->
             <Button Click="CreateVersionButton_Click"
@@ -60,7 +60,11 @@
                 <TextBlock Text="{Binding StatusMessage}" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
             </Grid>
             <Grid DockPanel.Dock="Right" HorizontalAlignment="Right">
-                <TextBlock Text="TEST" ToolTip="Запросы идут в тестовый контур!" HorizontalAlignment="Stretch" FontWeight="Bold" Foreground="Gray" VerticalAlignment="Center" Padding="0,0,5,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="TEST" ToolTip="Запросы идут в тестовый контур!" HorizontalAlignment="Stretch" FontWeight="Bold" Foreground="Gray" VerticalAlignment="Center" Padding="0,0,5,0">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Collapsed" />
@@ -72,6 +76,9 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
+                <Button Grid.Column="1"  x:Name="SettingsButton" Style="{StaticResource IconButtonStyle}" ToolTip="Settings" Click="SettingsButton_Click">
+                    <Image x:Name="SettingsIcon" Source="{Binding}" Style="{StaticResource IconImageStyle}"/>
+                </Button>
             </Grid>
             <!--</StackPanel>-->
 
@@ -144,7 +151,7 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-            <TabItem Header="Tree" IsEnabled="False">
+            <TabItem Header="Tree" IsEnabled="False" Visibility="Collapsed">
 
                 <StackPanel Visibility="Hidden">
                     <StackPanel.Style>
@@ -194,7 +201,7 @@
                 </StackPanel>
             </TabItem>
             <!--WORKPALCE TAB-->
-            <TabItem Header="Building" IsEnabled="False">
+            <TabItem Header="Building" IsEnabled="False" Visibility="Collapsed">
                 <StackPanel Margin="10">
                     <StackPanel.Style>
                         <Style TargetType="StackPanel">
@@ -225,20 +232,24 @@
             <!--COMMANDS TAB-->
             <TabItem Header="Commands" IsEnabled="True">
                 <Grid Margin="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="19*"/>
+                        <ColumnDefinition Width="203*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <DockPanel Grid.Row="0" Margin="8,3" HorizontalAlignment="Stretch">
-                        <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertToSVG" Style="{StaticResource commadButtonStyle}">Convert To SVG</Button>
-                        <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertLevelsToSVG" Style="{StaticResource commadButtonStyle}">Convert Level To SVG</Button>
+                    <DockPanel Grid.Row="0" Margin="8,3" HorizontalAlignment="Stretch" Grid.ColumnSpan="2">
+                        <Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertToSVG" Style="{StaticResource commadButtonStyle}">Экспортировать помещение в SVG</Button>
+                        <!--<Button Command="{Binding RunScratchCommand}" CommandParameter="ConvertLevelsToSVG" Style="{StaticResource commadButtonStyle}">Convert Level To SVG</Button>-->
                         <!--<Button Command="{Binding RunScratchCommand}" CommandParameter="BatchConvert" Style="{StaticResource commadButtonStyle}">Batch Convert</Button>-->
-                        <Button Command="{Binding RunScratchCommand}" CommandParameter="GetModelSnapshot" Style="{StaticResource commadButtonStyle}">Get Model Snapshot</Button>
+                        <!--<Button Command="{Binding RunScratchCommand}" CommandParameter="GetModelSnapshot" Style="{StaticResource commadButtonStyle}">Get Model Snapshot</Button>-->
                     </DockPanel>
 
-                    <ScrollViewer Grid.Row="1" Margin="5" VerticalScrollBarVisibility="Auto" CanContentScroll="False">
-                        
+                    <ScrollViewer Grid.Row="1" Margin="5" VerticalScrollBarVisibility="Auto" CanContentScroll="False" Grid.ColumnSpan="2">
+
                         <StackPanel>
                             <TextBox Margin="5" Text="{Binding ConsoleOutput}" IsReadOnly="True" TextWrapping="Wrap" BorderThickness="0">
                                 <TextBox.Style>

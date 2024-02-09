@@ -20,7 +20,7 @@ using Autodesk.Revit.DB.Architecture;
 
 namespace AlfaMap
 {
-    public class MainViewModel : ViewModelBase {
+    public class AppViewModel : ViewModelBase {
         #region Revit Properties
         private ExternalEvent externalEvent;
         private RevitEventHandler externalHandler;
@@ -207,12 +207,11 @@ namespace AlfaMap
         #endregion
 
         #region Main Properties
-        private bool test = false;
         public bool Test {
-            get { return test; }
+            get { return Config.Debug; }
             set {
-                test = value;
-                InitDataHandler(test);
+                Config.Debug = value;
+                InitDataHandler(value);
                 OnPropertyChanged();
             }
         }
@@ -427,7 +426,7 @@ namespace AlfaMap
         private BatchConvertViewModel batchConvertViewModel = new BatchConvertViewModel();
 
 
-        public MainViewModel()
+        public AppViewModel()
         {
             externalHandler = new RevitEventHandler();
             externalEvent = ExternalEvent.Create(externalHandler);
@@ -436,8 +435,7 @@ namespace AlfaMap
 
         private void InitDataHandler(bool test = false) {
             var baseUrl = test
-             //? "https://aptest.moscow.alfaintra.net/amap/api/v1"
-             ? "http://localhost:3030/api/v1"
+             ? "https://aptest.moscow.alfaintra.net/amap/api/v1"
              : "https://ap.moscow.alfaintra.net/amap/api/v1";
 
             var httpHandler = new HttpClientHandler {

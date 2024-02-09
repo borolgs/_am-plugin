@@ -24,19 +24,25 @@ namespace AlfaMap
     /// </summary>
     public partial class UI : UserControl
     {
-        public MainViewModel ViewModel { get; private set; }
+        public AppViewModel ViewModel { get; private set; }
 
-        public UI(MainViewModel viewModel)
+        private SettingsWindow settingsWindow;
+        private bool settingsWindowOpened = false;
+
+
+
+        public UI(AppViewModel viewModel)
         {
             InitializeComponent();
             ViewModel = viewModel; // new MainViewModel();
             this.DataContext = ViewModel;
             CheckImage.Source = ImageUtils.GetImage(Properties.Resources.check.GetHbitmap());
-            ConnectImage.Source = ImageUtils.GetImage(Properties.Resources.connect.GetHbitmap());
+            // ConnectImage.Source = ImageUtils.GetImage(Properties.Resources.connect.GetHbitmap());
             LoadImage.Source = ImageUtils.GetImage(Properties.Resources.download.GetHbitmap());
             //ReniewTreeIcon.Source = ImageUtils.GetImage(Properties.Resources.renew.GetHbitmap());
             //UploadNewVersion.Source = ImageUtils.GetImage(Properties.Resources.upload.GetHbitmap());
             UploadNewVersion2.Source = ImageUtils.GetImage(Properties.Resources.upload.GetHbitmap());
+            SettingsIcon.Source = ImageUtils.GetImage(Properties.Resources.settings.GetHbitmap());
         }
 
         private void DeleteBuildingButton_Click(object sender, RoutedEventArgs e)
@@ -125,6 +131,14 @@ namespace AlfaMap
             var data = button.DataContext as SyncNodeInfo;
             if (data.NodeId.Value > 0) {
                 Process.Start(@"http://s06dro.regions.alfaintra.net:3000/#/tree78/id/" + data.NodeId.Value);
+            }
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e) {
+            if (settingsWindow == null || !settingsWindow.IsActive) {
+                settingsWindow = new SettingsWindow(ViewModel);
+                settingsWindow.Show();
+                settingsWindowOpened = true;
             }
         }
     }

@@ -18,8 +18,8 @@ namespace AlfaMap
 {
     public partial class ErrorDialog : Window
     {
-        private MainViewModel viewModel;
-        public ErrorDialog(MainViewModel vm)
+        private AppViewModel viewModel;
+        public ErrorDialog(AppViewModel vm)
         {
             InitializeComponent();
             viewModel = vm;

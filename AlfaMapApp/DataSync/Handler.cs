@@ -430,22 +430,22 @@ namespace AlfaMap.DataSync {
                 var data3dString = JsonConvert.SerializeObject(converter.Root, new StringEnumConverter());
                 var encodedData3dString = await StringUtils.ConvertoToZipBase64(data3dString);
 
-                //var converter2d = new BuildingTo2DConverter();
-                //var data2d = converter2d.Convert(Tree.Root);
-                //var jsonSettings = new JsonSerializerSettings {
-                //    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                //    Converters = new JsonConverter[] {
-                //        new BBoxConverter(),
-                //        new XYZConverter(),
-                //        new BoundariesConverter(),
-                //        new CurveConverter(),
-                //    },
-                //    NullValueHandling = NullValueHandling.Ignore,
-                //};
-                //var data2dString = JsonConvert.SerializeObject(data2d, jsonSettings);
-                //var encodedData2dString = await StringUtils.ConvertoToZipBase64(data2dString);
+                var converter2d = new BuildingTo2DConverter();
+                var data2d = converter2d.Convert(Tree.Root);
+                var jsonSettings = new JsonSerializerSettings {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    Converters = new JsonConverter[] {
+                        new BBoxConverter(),
+                        new XYZConverter(),
+                        new BoundariesConverter(),
+                        new CurveConverter(),
+                    },
+                    NullValueHandling = NullValueHandling.Ignore,
+                };
+                var data2dString = JsonConvert.SerializeObject(data2d, jsonSettings);
+                var encodedData2dString = await StringUtils.ConvertoToZipBase64(data2dString);
 
-                return new OkResult<(string, string), DataSyncException>((encodedData3dString, null));
+                return new OkResult<(string, string), DataSyncException>((encodedData3dString, encodedData2dString));
             } catch (Exception e) {
                 return new ErrResult<(string,string), DataSyncException>(new DataSyncException("Convert geometry error", e));
             }
