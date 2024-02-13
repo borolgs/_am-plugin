@@ -20,7 +20,7 @@ using Autodesk.Revit.DB.Architecture;
 
 namespace AlfaMap
 {
-    public class MainViewModel : ViewModelBase {
+    public class AppViewModel : ViewModelBase {
         #region Revit Properties
         private ExternalEvent externalEvent;
         private RevitEventHandler externalHandler;
@@ -156,7 +156,7 @@ namespace AlfaMap
                                     bool validNode = selectedNode?.Node?.type.id == 4 && selectedNode.Children.Where(workplaceNode => workplaceNode.Node?.type?.id == 5).Count() > 0;
                                     if (!validNode) {
                                         dialog.MainInstruction = "Выбранный элемент не помещение-коворкинг";
-                                        dialog.MainContent = "Выберите помещение-коворкинг и повторите команду";
+                                        dialog.MainContent = "Выберите помещение-коворкинг и повторите команду\nЕсли нужно экспортировать любое помещение см. <a href=\"https://confluence.moscow.alfaintra.net/pages/viewpage.action?pageId=1573407323&preview=/1573407323/1573407363/svg-export.pdf\">инструкцию</a>";
                                         dialog.Show();
                                         return;
                                     }
@@ -207,12 +207,11 @@ namespace AlfaMap
         #endregion
 
         #region Main Properties
-        private bool test = false;
         public bool Test {
-            get { return test; }
+            get { return Config.Debug; }
             set {
-                test = value;
-                InitDataHandler(test);
+                Config.Debug = value;
+                InitDataHandler(value);
                 OnPropertyChanged();
             }
         }
@@ -427,17 +426,17 @@ namespace AlfaMap
         private BatchConvertViewModel batchConvertViewModel = new BatchConvertViewModel();
 
 
-        public MainViewModel()
+        public AppViewModel()
         {
             externalHandler = new RevitEventHandler();
             externalEvent = ExternalEvent.Create(externalHandler);
             DisplayTree = new DisplayBuildingTree();
+            InitDataHandler(Test);
         }
 
         private void InitDataHandler(bool test = false) {
             var baseUrl = test
-             //? "https://aptest.moscow.alfaintra.net/amap/api/v1"
-             ? "http://localhost:3030/api/v1"
+             ? "https://aptest.moscow.alfaintra.net/amap/api/v1"
              : "https://ap.moscow.alfaintra.net/amap/api/v1";
 
             var httpHandler = new HttpClientHandler {

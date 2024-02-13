@@ -17,8 +17,8 @@ namespace AlfaMap
 {
     public partial class LinkBulding : Window
     {
-        private MainViewModel viewModel;
-        public LinkBulding(MainViewModel vm)
+        private AppViewModel viewModel;
+        public LinkBulding(AppViewModel vm)
         {
             InitializeComponent();
             viewModel = vm;

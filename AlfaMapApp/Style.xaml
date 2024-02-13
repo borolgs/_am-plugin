@@ -5,7 +5,9 @@
     <SolidColorBrush x:Key="border" Color="#FFBBBBBB"/>
     <SolidColorBrush x:Key="primaryBg" Color="#FFBBBBBB"/>
     <SolidColorBrush x:Key="secondaryBg" Color="#FFBBBBBB"/>
-    
+    <SolidColorBrush x:Key="error" Color="#FFD61818"/>
+
+
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     
     <Style TargetType="TextBox">

@@ -243,9 +243,6 @@ namespace AlfaMap.DataSync {
             }
 
             foreach (ModelNode modelNode in Tree.Nodes.Values) {
-                if (modelNode.Id.IntegerValue == 1349238) {
-                    Console.WriteLine("!");
-                }
                 if (modelNode.Type == ModelNodeType.Level || modelNode.Type == ModelNodeType.Building) {
                     continue;
                 }
@@ -430,22 +427,36 @@ namespace AlfaMap.DataSync {
                 var data3dString = JsonConvert.SerializeObject(converter.Root, new StringEnumConverter());
                 var encodedData3dString = await StringUtils.ConvertoToZipBase64(data3dString);
 
-                //var converter2d = new BuildingTo2DConverter();
-                //var data2d = converter2d.Convert(Tree.Root);
-                //var jsonSettings = new JsonSerializerSettings {
-                //    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                //    Converters = new JsonConverter[] {
-                //        new BBoxConverter(),
-                //        new XYZConverter(),
-                //        new BoundariesConverter(),
-                //        new CurveConverter(),
-                //    },
-                //    NullValueHandling = NullValueHandling.Ignore,
-                //};
-                //var data2dString = JsonConvert.SerializeObject(data2d, jsonSettings);
-                //var encodedData2dString = await StringUtils.ConvertoToZipBase64(data2dString);
+                string encodedData2dString = null;
 
-                return new OkResult<(string, string), DataSyncException>((encodedData3dString, null));
+                var buildingMass = new FilteredElementCollector(Tree.Root.Element.Document)
+                    .OfCategory(BuiltInCategory.OST_Mass)
+                    .WhereElementIsNotElementType()
+                    .Where(a => a.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.AsString() == "MAIN")
+                    .FirstOrDefault();
+                if (buildingMass == null) {
+                    var dialog = new TaskDialog("Экспорт модели без 2D");
+                    dialog.MainInstruction = "В систему будет загружена только 3D версия модели";
+                    dialog.MainContent = "Для экспорта 2D версии по зданию должна быть сделана формообразующая с комментарием МAIN.\nСм. <a href=\"https://confluence.moscow.alfaintra.net/pages/viewpage.action?pageId=1573407323\">инструкции</a>";
+                    dialog.Show();
+                } else {
+                    var converter2d = new BuildingTo2DConverter();
+                    var data2d = converter2d.Convert(Tree.Root);
+                    var jsonSettings = new JsonSerializerSettings {
+                        ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                        Converters = new JsonConverter[] {
+                        new BBoxConverter(),
+                        new XYZConverter(),
+                        new BoundariesConverter(),
+                        new CurveConverter(),
+                    },
+                        NullValueHandling = NullValueHandling.Ignore,
+                    };
+                    var data2dString = JsonConvert.SerializeObject(data2d, jsonSettings);
+                    encodedData2dString = await StringUtils.ConvertoToZipBase64(data2dString);
+                }
+
+                return new OkResult<(string, string), DataSyncException>((encodedData3dString, encodedData2dString));
             } catch (Exception e) {
                 return new ErrResult<(string,string), DataSyncException>(new DataSyncException("Convert geometry error", e));
             }

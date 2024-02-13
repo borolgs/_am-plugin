@@ -17,8 +17,8 @@ namespace AlfaMap
 {
     public partial class UploadModelDialog : Window
     {
-        private MainViewModel viewModel;
-        public UploadModelDialog(MainViewModel vm)
+        private AppViewModel viewModel;
+        public UploadModelDialog(AppViewModel vm)
         {
             InitializeComponent();
             viewModel = vm;
