@@ -3,6 +3,7 @@
   <Costura IncludeDebugSymbols="false" UseRuntimeReferencePaths='true' CreateTemporaryAssemblies='true'>
     <IncludeAssemblies>
       Newtonsoft.Json
+      Handlebars
     </IncludeAssemblies>
   </Costura>
 </Weavers>

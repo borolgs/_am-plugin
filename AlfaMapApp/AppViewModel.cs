@@ -156,7 +156,7 @@ namespace AlfaMap
                                     bool validNode = selectedNode?.Node?.type.id == 4 && selectedNode.Children.Where(workplaceNode => workplaceNode.Node?.type?.id == 5).Count() > 0;
                                     if (!validNode) {
                                         dialog.MainInstruction = "Выбранный элемент не помещение-коворкинг";
-                                        dialog.MainContent = "Выберите помещение-коворкинг и повторите команду";
+                                        dialog.MainContent = "Выберите помещение-коворкинг и повторите команду\nЕсли нужно экспортировать любое помещение см. <a href=\"https://confluence.moscow.alfaintra.net/pages/viewpage.action?pageId=1573407323&preview=/1573407323/1573407363/svg-export.pdf\">инструкцию</a>";
                                         dialog.Show();
                                         return;
                                     }
@@ -431,6 +431,7 @@ namespace AlfaMap
             externalHandler = new RevitEventHandler();
             externalEvent = ExternalEvent.Create(externalHandler);
             DisplayTree = new DisplayBuildingTree();
+            InitDataHandler(Test);
         }
 
         private void InitDataHandler(bool test = false) {
