@@ -445,7 +445,14 @@ namespace AlfaMap
             };
             httpHandler.ClientCertificateOptions = ClientCertificateOption.Manual;
             httpHandler.ServerCertificateCustomValidationCallback = (msg, cert, certChain, policyErrors) => true;
-            var client = new DataSync.Client(new HttpClient(httpHandler), baseUrl);
+
+            var queryHandler = new DataSync.DefaultQueryHandler(new Dictionary<string, string> {
+                ["ap-direct-mode"] = "true",
+            }) {
+                InnerHandler = httpHandler,
+            };
+
+            var client = new DataSync.Client(new HttpClient(queryHandler), baseUrl);
             handler = new DataSync.Handler(client);
         }
 

@@ -299,6 +299,7 @@
     <Compile Include="DataSync\ModelDataConverter.cs" />
     <Compile Include="DataSync\DataSyncException.cs" />
     <Compile Include="DataSync\Handler.cs" />
+    <Compile Include="DataSync\DefaultQueryHandler.cs" />
     <Compile Include="Shared\Parameters.cs" />
     <Compile Include="Converter\THREEConverter.cs" />
     <Compile Include="Converter\THREEGeometry.cs" />
