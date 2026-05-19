@@ -19,7 +19,7 @@ namespace AlfaMap {
             } else {
                 assembly = Assembly.Load(bytes);
             }
-            Type vmType = assembly.GetType("AlfaMap.MainViewModel");
+            Type vmType = assembly.GetType("AlfaMap.AppViewModel");
             Type uiType = assembly.GetType("AlfaMap.UI");
             vmInstance = Activator.CreateInstance(vmType);
             docProperty = vmType.GetProperty("Doc");
