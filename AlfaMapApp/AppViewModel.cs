@@ -446,13 +446,16 @@ namespace AlfaMap
             httpHandler.ClientCertificateOptions = ClientCertificateOption.Manual;
             httpHandler.ServerCertificateCustomValidationCallback = (msg, cert, certChain, policyErrors) => true;
 
-            var queryHandler = new DataSync.DefaultQueryHandler(new Dictionary<string, string> {
-                ["ap-direct-mode"] = "true",
-            }) {
-                InnerHandler = httpHandler,
-            };
+            //var queryHandler = new DataSync.DefaultQueryHandler(new Dictionary<string, string> {
+            //    ["ap-direct-mode"] = "true",
+            //}) {
+            //    InnerHandler = httpHandler,
+            //};
 
-            var client = new DataSync.Client(new HttpClient(queryHandler), baseUrl);
+            var http = new HttpClient(httpHandler);
+            http.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Dest", "empty");
+
+            var client = new DataSync.Client(http, baseUrl);
             handler = new DataSync.Handler(client);
         }
 
